@@ -1,0 +1,41 @@
+.task {
+  padding: 1rem;
+  background: rgba(0,0,0,.4) !important;
+  margin: .3rem 0;
+
+  .task-text {
+    white-space: pre-wrap;
+  }
+
+  .task-header {
+    display: flex;
+    align-items: flex-start;
+
+    .date {
+      font-size: .7rem;
+      opacity: .8;
+      margin-bottom: .4rem;
+      display: block;
+      line-height: 1.8;
+      flex-grow: 1;
+
+      .warn {
+        color: rgb(241, 207, 56);
+      }
+    }
+  }
+
+  &.expired {
+    .task-header {
+      align-items: center;
+    }
+
+    .date {
+      color: rgb(250, 67, 67);
+      opacity: 1;
+      line-height: normal;
+      font-size: .73rem;
+      font-weight: 700;
+    }
+  }
+}

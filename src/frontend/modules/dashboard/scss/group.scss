@@ -1,0 +1,42 @@
+.group {
+  margin: 1rem .35rem;
+  height: calc(100% - 4rem);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  .no-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+
+    .illustration {
+      width: 80%;
+      height: 270px;
+      background: url("../../../../resources/illustration/undraw_empty_xct9.svg");
+      background-size: cover;
+      margin: .75rem 0;
+    }
+
+    .text {
+      width: 80%;
+      text-align: center;
+    }
+  }
+
+  .group-header {
+    display: flex;
+    align-items: center;
+
+    .title {
+      flex-grow: 1;
+    }
+
+    .group-action {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

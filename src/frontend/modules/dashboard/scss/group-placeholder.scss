@@ -1,0 +1,34 @@
+.group-placeholder {
+  border: 1px dashed rgba(207, 207, 207, 0.534);
+  margin: 1rem .35rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+
+  &.edit-mode {
+    cursor: default;
+  }
+
+  .heading {
+    .add-icon {
+      transition: 150ms all ease;
+      font-size: 3rem;
+      vertical-align: middle;
+    }
+    display: flex;
+    align-items: center ;
+  }
+
+  .edit-form {
+    width: 80%;
+  }
+
+  &:hover {
+    .heading .add-icon {
+      color: #EB5757;
+    }
+  }
+}

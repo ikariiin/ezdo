@@ -1,0 +1,22 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  background: url("../../../../resources/background/pk-TKE9nLVNlto-unsplash.jpg");
+  background-size: cover;
+
+  .form-container {
+    background: #202020c4;
+    padding: 10%;
+
+    a {
+      margin: 0 .2rem;
+    }
+
+    .form {
+      width: 80%;
+      margin: 3rem 0;
+    }
+  }
+}

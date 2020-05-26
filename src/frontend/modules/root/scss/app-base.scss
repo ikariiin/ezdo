@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;700&family=Roboto:wght@300;400;900&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Josefin Sans', Sen, sans-serif;
+  font-size: 14px;
+  background: #151515;
+  color: #EAEAEA;
+
+  a {
+    color: #3FE0D0;
+    text-decoration: none;
+    padding: .1rem 0;
+    border-bottom: 2px solid #3FE0D0;
+    cursor: pointer;
+  }
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

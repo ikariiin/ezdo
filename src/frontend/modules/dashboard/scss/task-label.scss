@@ -1,0 +1,9 @@
+.task-label-control {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+
+  .label-chip {
+    margin: .25rem .3rem;
+  }
+}

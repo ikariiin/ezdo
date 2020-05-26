@@ -1,0 +1,14 @@
+.new-task {
+  padding: .5rem;
+  background: rgba(0,0,0,.4) !important;
+  margin: .3rem 0;
+
+  .button-container {
+    text-align: right;
+    margin-bottom: .2rem;
+
+    & > * {
+      margin-left: .4rem;
+    }
+  }
+}
