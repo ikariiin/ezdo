@@ -5,4 +5,5 @@ export const API_TODO_CREATE = "/todo/create";
 export const API_TODOS = "/todo";
 export const API_TODO_LABEL = "/todo/label";
 export const API_TODO_DELETE = "/todo/delete";
+export const API_TODO_MOVE = "/todo/move";
 export const API_HOST = "http://localhost:1337";

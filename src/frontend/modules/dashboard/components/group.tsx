@@ -7,18 +7,23 @@ import { observer } from 'mobx-react';
 import { observable, computed } from 'mobx';
 import { NewTask } from './new-task';
 import { Todo } from '../../../../backend/entities/todo';
-import { API_HOST, API_TODOS } from '../../util/api-routes';
+import { API_HOST, API_TODOS, API_GROUPS } from '../../util/api-routes';
 import { Task } from './task';
+import { GroupDeleteConfirm } from './dialogs/group-delete-confirm';
 
-export interface TasksProps {
+export interface GroupProps {
   title: string;
   id: number;
+  refreshGroup: (groupId: number) => any;
+  groupUpdate: number;
+  refresh: () => any;
 }
 
 @observer
-export class Group extends React.Component<TasksProps> {
+export class Group extends React.Component<GroupProps> {
   @observable private createMode: boolean = false;
   @observable private tasks: Array<Todo> = [];
+  @observable private confirmDelete: boolean = false;
 
   private async getTasks(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.id}/all`, {
@@ -41,6 +46,12 @@ export class Group extends React.Component<TasksProps> {
     this.getTasks();
   }
 
+  public componentDidUpdate(prevProps: GroupProps) {
+    if(prevProps.groupUpdate !== this.props.groupUpdate) {
+      this.getTasks();
+    }
+  }
+
   @computed private get noContent(): React.ReactNode {
     if(!this.createMode && this.tasks.length === 0) {
       return (
@@ -57,16 +68,43 @@ export class Group extends React.Component<TasksProps> {
   }
 
   @computed private get tasksRender(): React.ReactNode {
-    if(this.tasks.length === 0) return;
+    if(this.tasks.length === 0) return null;
 
-    return this.tasks.map(task => (
-      <Task {...task} refresh={() => this.getTasks()} key={task.id} />
-    ));
+    return (
+      <section className="tasks">
+        {this.tasks.map(task => (
+          <Task {...task} refresh={() => this.getTasks()} refreshGroup={this.props.refreshGroup} key={task.id} />
+        ))}
+      </section>
+    );
+  }
+
+  private async deleteGroup(): Promise<void> {
+    const response = await fetch(`${API_HOST}${API_GROUPS}/${this.props.id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: localStorage.getItem("jwtKey") || ''
+      }
+    });
+
+    const responseJSON = await response.json();
+
+    if(responseJSON.failed) {
+      console.error(responseJSON);
+      return;
+    }
+
+    this.props.refresh();
   }
   
   public render() {
     return (
       <Paper className="group" elevation={2}>
+        <GroupDeleteConfirm
+          close={() => this.confirmDelete = false}
+          onClose={() => this.confirmDelete = false}
+          onDelete={() => this.deleteGroup()}
+          open={this.confirmDelete} />
         <header className="group-header">
           <Typography variant="h5" className="title">{this.props.title}</Typography>
           <section className="group-action">
@@ -75,7 +113,7 @@ export class Group extends React.Component<TasksProps> {
                 <AddIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Delete group (permanent)">
+            <Tooltip title="Delete group" onClick={() => this.confirmDelete = true}>
               <IconButton>
                 <DeleteIcon />
               </IconButton>

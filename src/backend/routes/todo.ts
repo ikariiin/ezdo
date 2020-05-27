@@ -337,6 +337,136 @@ router.put("/:todoId", async (req: express.Request, res: express.Response) => {
     });
     return;
   }
-})
+});
+
+router.patch("/move/:todoId", async (req: express.Request, res: express.Response) => {
+  const jwtKey = req.headers.authorization;
+  if(!jwtKey) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "User is not authorized to request this content",
+      errorEnum: ErrorEnums.UserNotAuthorized
+    });
+    return;
+  }
+  try {
+    const username = getUsernameFromJWT(jwtKey);
+    const connection = req.db;
+    const todos = connection.getRepository(Todo);
+    const { todoId } = req.params;
+
+    const specifiedTodo = await todos.findOne({
+      where: {
+        id: Number(todoId)
+      }
+    });
+
+    if(!specifiedTodo) {
+      res.status(404);
+      res.json({
+        failed: true,
+        reason: "Todo with the id provided not found",
+        errorEnum: ErrorEnums.TodoNotFound
+      });
+      return;
+    }
+
+    if(specifiedTodo.author !== username) {
+      res.status(401);
+      res.json({
+        failed: true,
+        reason: "User is not authorized to modify the todo",
+        errorEnum: ErrorEnums.UserNotAuthorized
+      });
+      return;
+    }
+
+    const { groupId } = req.body;
+
+    const updateResult = await todos.update({
+      id: Number(todoId)
+    }, {
+      group: Number(groupId)
+    });
+    res.json({
+      success: true,
+      updateResult
+    });
+  } catch (e) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "Token for authorization is invalid",
+      errorEnum: ErrorEnums.TokenInvalid
+    });
+    return;
+  }
+});
+
+router.delete("/:todoId/label/:labelIndex", async (req: express.Request, res: express.Response) => {
+  const jwtKey = req.headers.authorization;
+  if(!jwtKey) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "User is not authorized to request this content",
+      errorEnum: ErrorEnums.UserNotAuthorized
+    });
+    return;
+  }
+  try {
+    const username = getUsernameFromJWT(jwtKey);
+    const connection = req.db;
+    const todos = connection.getRepository(Todo);
+    const { todoId, labelIndex } = req.params;
+
+    const specifiedTodo = await todos.findOne({
+      where: {
+        id: Number(todoId)
+      }
+    });
+
+    if(!specifiedTodo) {
+      res.status(404);
+      res.json({
+        failed: true,
+        reason: "Todo with the id provided not found",
+        errorEnum: ErrorEnums.TodoNotFound
+      });
+      return;
+    }
+
+    if(specifiedTodo.author !== username) {
+      res.status(401);
+      res.json({
+        failed: true,
+        reason: "User is not authorized to modify the todo",
+        errorEnum: ErrorEnums.UserNotAuthorized
+      });
+      return;
+    }
+
+    const newLabel = specifiedTodo.label.split("//").filter((label, index) => index !== Number(labelIndex)).join("//");
+    const updateResult = await todos.update({
+      id: Number(todoId)
+    }, {
+      label: newLabel
+    });
+
+    res.json({
+      success: true,
+      updateResult
+    });
+  } catch (e) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "Token for authorization is invalid",
+      errorEnum: ErrorEnums.TokenInvalid
+    });
+    return;
+  }
+});
 
 export { router as TodoRouter };

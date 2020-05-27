@@ -10,6 +10,7 @@ export interface TaskMenuProps {
   onClose: () => any;
   onDelete: () => any;
   onEdit: () => any;
+  onMove: () => any;
 }
 
 export const TaskMenu: React.FunctionComponent<TaskMenuProps> = (props): JSX.Element => (
@@ -20,7 +21,7 @@ export const TaskMenu: React.FunctionComponent<TaskMenuProps> = (props): JSX.Ele
       </ListItemIcon>
       Edit
     </MenuItem>
-    <MenuItem>
+    <MenuItem onClick={props.onMove}>
       <ListItemIcon>
         <MoveIcon />
       </ListItemIcon>

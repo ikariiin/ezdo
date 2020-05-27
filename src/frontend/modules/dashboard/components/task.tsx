@@ -11,17 +11,20 @@ import { TaskMenu } from './task-menu';
 import { API_HOST, API_TODO_DELETE } from '../../util/api-routes';
 import { TaskDeleteConfirm } from './dialogs/task-delete-confirm'
 import { TaskEdit } from './task-edit';
+import { TaskMove } from './dialogs/task-move';
 
 export interface TaskProps extends Todo {
   refresh: () => void;
+  refreshGroup: (id: number) => any;
 }
 
 @observer
 export class Task extends React.Component<TaskProps> {
   @observable private anchorEl: HTMLButtonElement|null = null;
   @observable private timeFromNow: string = "";
-  @observable private openDeleteDialouge: boolean = false;
+  @observable private deleteDialog: boolean = false;
   @observable private editTask: boolean = false;
+  @observable private moveTaskDialog: boolean = false;
 
   private openMenu(ev: React.MouseEvent<HTMLButtonElement>): void {
     this.anchorEl = ev.currentTarget;
@@ -39,14 +42,14 @@ export class Task extends React.Component<TaskProps> {
     if(this.isExpired()) {
       return ( 
         <time className="date">
-          Already expired on {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm:ss a")}!
+          Already expired on {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
         </time>
       );
     }
 
     return (
       <time className="date">
-        Due by {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm:ss a")}
+        Due by {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
         <br />
         or, due {this.timeFromNow.includes("minutes") ? <span className="warn">{this.timeFromNow}</span> : this.timeFromNow}
       </time>
@@ -71,14 +74,13 @@ export class Task extends React.Component<TaskProps> {
     });
 
     console.log(await response.json());
-    this.openDeleteDialouge = false;
+    this.deleteDialog = false;
     this.anchorEl = null;
     this.props.refresh();
   }
 
   @action private closeDialogue(): void {
-    this.openDeleteDialouge = false;
-    this.anchorEl = null;
+    this.deleteDialog = false;
   }
 
   @action private openEditTask(): void {
@@ -91,6 +93,16 @@ export class Task extends React.Component<TaskProps> {
     this.props.refresh();
   }
 
+  @action private openMoveMenu(): void {
+    this.moveTaskDialog = true;
+    this.anchorEl = null;
+  }
+
+  @action private openDeleteDialog(): void {
+    this.deleteDialog = true;
+    this.anchorEl = null;
+  }
+
   public render() {
     if(this.editTask) {
       return <TaskEdit done={() => this.editDone()} todoId={this.props.id} onCancel={() => this.editTask = false} />;
@@ -101,8 +113,15 @@ export class Task extends React.Component<TaskProps> {
         <TaskDeleteConfirm
           onClose={() => this.closeDialogue()}
           close={() => this.closeDialogue()}
-          open={this.openDeleteDialouge}
+          open={this.deleteDialog}
           onDelete={() => this.deleteTask()} />
+        <TaskMove
+          open={this.moveTaskDialog}
+          todoId={this.props.id}
+          onClose={() => this.moveTaskDialog = false}
+          close={() => this.moveTaskDialog = false}
+          refreshGroup={this.props.refreshGroup}
+          currentGroupId={this.props.group} />
         <header className="task-header">
           {this.timeRender}
           <IconButton size="small" onClick={ev => this.openMenu(ev)}>
@@ -111,8 +130,9 @@ export class Task extends React.Component<TaskProps> {
           <TaskMenu
             anchorEl={this.anchorEl}
             open={Boolean(this.anchorEl)}
-            onDelete={() => this.openDeleteDialouge = true}
+            onDelete={() => this.openDeleteDialog()}
             onEdit={() => this.openEditTask()}
+            onMove={() => this.openMoveMenu()}
             onClose={() => this.closeMenu()} />
         </header>
         <Typography variant="body2" className="task-text">

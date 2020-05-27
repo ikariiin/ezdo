@@ -81,7 +81,7 @@ export class TaskEdit extends React.Component<TaskEditProps> {
         
         <DateTimePicker
           variant="inline"
-          format="MMMM Do YYYY, h:mm:ss a"
+          format="MMMM Do YYYY, h:mm a"
           margin="normal"
           label="Due Date"
           minDate={new Date()}

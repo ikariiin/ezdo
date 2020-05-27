@@ -3,13 +3,18 @@ import "../scss/dashboard.scss";
 import { Group } from './group';
 import { API_HOST, API_GROUPS } from '../../util/api-routes';
 import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import { Groups } from '../../../../backend/entities/groups';
 import { GroupPlaceholder } from './group-placeholder';
+
+export interface GroupUpdate {
+  [key: number]: number
+}
 
 @observer
 export class Dashboard extends React.Component<{}> {
   @observable groups: Array<Groups> = [];
+  @observable groupUpdates: GroupUpdate = {};
 
   private async getGroups(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_GROUPS}`, {
@@ -27,6 +32,7 @@ export class Dashboard extends React.Component<{}> {
     }
 
     this.groups = responseJson;
+    this.groups.map(group => group.id).forEach(groupId => this.groupUpdates[groupId] = 0);
   }
 
   private renderBlankGroups(): Array<React.ReactNode> {
@@ -41,11 +47,19 @@ export class Dashboard extends React.Component<{}> {
     this.getGroups();
   }
 
+  @action private refreshGroup(id: number): void {
+    this.groupUpdates[id]++;
+  }
+
   public render() {
     return (
       <main className="dashboard">
         {this.groups.map(group => (
-          <Group title={group.name} id={group.id} key={group.id} />
+          <Group
+            refresh={() => this.getGroups()}
+            refreshGroup={(id: number) => this.refreshGroup(id)}
+            groupUpdate={this.groupUpdates[group.id]}
+            title={group.name} id={group.id} key={group.id} />
         ))}
         {this.renderBlankGroups()}
       </main>

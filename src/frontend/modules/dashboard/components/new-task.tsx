@@ -75,7 +75,7 @@ export class NewTask extends React.Component<NewTaskProps> {
         
         <DateTimePicker
           variant="inline"
-          format="MMMM Do YYYY, h:mm:ss a"
+          format="MMMM Do YYYY, h:mm a"
           margin="normal"
           label="Due Date"
           minDate={new Date()}

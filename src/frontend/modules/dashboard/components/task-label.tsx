@@ -5,7 +5,7 @@ import { computed, observable, action } from 'mobx';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/CloseOutlined';
 import "../scss/task-label.scss";
-import { API_HOST, API_TODO_LABEL } from '../../util/api-routes';
+import { API_HOST, API_TODO_LABEL, API_TODOS } from '../../util/api-routes';
 
 export interface TaskLabelProps {
   groupId: number;
@@ -19,7 +19,24 @@ export class TaskLabel extends React.Component<TaskLabelProps> {
   @observable private labelInput: boolean = false;
   @observable private newLabel: string = '';
 
-  private async deleteLabel(labelKey: number): Promise<void> {}
+  private async deleteLabel(labelKey: number): Promise<void> {
+    const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.todoId}/label/${labelKey}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: localStorage.getItem('jwtKey') || ''
+      }
+    });
+
+    const responseJSON = await response.json();
+
+    if(responseJSON.failed) {
+      console.error(responseJSON);
+      return;
+    }
+
+    console.log(responseJSON);
+    this.props.refresh();
+  }
 
   @computed private get labels(): React.ReactNode {
     if(!this.props.label) {
