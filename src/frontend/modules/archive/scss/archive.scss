@@ -1,0 +1,19 @@
+.archive {
+  margin: 0 .8rem;
+  .header {
+    margin: .75rem .5rem;
+    display: flex;
+    .space {
+      flex-grow: 1;
+    }
+  }
+
+  .tasks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    & > * {
+      margin: .5rem;
+    }
+  }
+}

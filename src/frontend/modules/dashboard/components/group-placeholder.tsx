@@ -61,7 +61,7 @@ export class GroupPlaceholder extends React.Component<GroupPlaceholderProps> {
           variant="outlined"
           onChange={ev => this.groupName = ev.target.value}
           helperText="A short but informative name works the best!"
-          focused
+          autoFocus
           label="Group Name" />
         <br />
         <br />

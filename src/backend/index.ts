@@ -20,7 +20,7 @@ async function startApp(dbPath: string = '') {
 
   const connection = await createConnection({
     type: "sqlite",
-    database: dbPath,
+    database: "F:\\Projects\\todo-hackerearth\\todo.sqlite",
     entities: [
       User,
       Groups,

@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, Typography } from '@material-ui/core';
+import { Drawer, List, ListItem, ListItemIcon, Typography, Divider, ListItemText } from '@material-ui/core';
 import "../scss/todo-drawer.scss";
 import { Link } from 'react-router-dom';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 export interface ToDoDrawerProps {
   open: boolean;
@@ -23,7 +25,20 @@ export const ToDoDrawer: React.FunctionComponent<ToDoDrawerProps> = ({ open, clo
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        Dashboard
+        <ListItemText primary="Dashboard" />
+      </ListItem>
+      <ListItem button component={Link} to="/archive" onClick={closeDrawer}>
+        <ListItemIcon>
+          <ArchiveIcon />
+        </ListItemIcon>
+        <ListItemText primary="Archive" />
+      </ListItem>
+      <Divider />
+      <ListItem button>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
       </ListItem>
     </List>
   </Drawer>

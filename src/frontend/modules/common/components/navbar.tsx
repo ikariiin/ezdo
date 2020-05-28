@@ -28,7 +28,7 @@ export class NavBar extends React.Component<{}> {
               </IconButton>
             )}
             <Typography variant="h6" className="app-name">
-              Tos Dos
+              EZ Do
             </Typography>
           </Toolbar>
         </AppBar>

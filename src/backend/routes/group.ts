@@ -89,6 +89,51 @@ router.post("/", async (req: express.Request, res: express.Response) => {
   }
 });
 
+router.delete("/archive", async (req: express.Request, res: express.Response) => {
+  console.log('head');
+  const jwtKey = req.headers.authorization;
+  if(!jwtKey) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "User is not authorized to request this content",
+      errorEnum: ErrorEnums.UserNotAuthorized
+    });
+    return;
+  }
+  
+  try {
+    const username = getUsernameFromJWT(jwtKey);
+    const users = req.db.getRepository(User);
+    const todos = req.db.getRepository(Todo);
+
+    console.log(username, "loooooooooooo");
+    const user = await users.findOne({ username: username });
+    if(!user) {
+      res.status(404);
+      res.json({ failed: true, reason: "No groups found for this user", errorEnum: ErrorEnums.NoGroupsFound });
+      return;
+    }
+    const removalResult = await todos.delete({
+      author: username,
+      group: -1
+    });
+
+    res.json({
+      success: true,
+      removalResult
+    });
+  } catch(e) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "Token for authorization is invalid",
+      errorEnum: ErrorEnums.TokenInvalid
+    });
+    return;
+  }
+});
+
 router.delete("/:groupId", async (req: express.Request, res: express.Response) => {
   const jwtKey = req.headers.authorization;
   if(!jwtKey) {
@@ -139,5 +184,52 @@ router.delete("/:groupId", async (req: express.Request, res: express.Response) =
     return;
   }
 })
+
+router.get("/:groupId", async (req: express.Request, res: express.Response) => {
+  const jwtKey = req.headers.authorization;
+  if(!jwtKey) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "User is not authorized to request this content",
+      errorEnum: ErrorEnums.UserNotAuthorized
+    });
+    return;
+  }
+  
+  try {
+    const username = getUsernameFromJWT(jwtKey);
+    const users = req.db.getRepository(User);
+    const todos = req.db.getRepository(Todo);
+    const { groupId } = req.params;
+      
+    const user = await users.findOne({ username: username });
+    if(!user) {
+      res.status(404);
+      res.json({ failed: true, reason: "No groups found for this user", errorEnum: ErrorEnums.NoGroupsFound });
+      return;
+    }
+
+    const tasks = await todos.find({
+      where: {
+        group: Number(groupId),
+        author: username
+      }
+    });
+
+    res.json({
+      success: true,
+      tasks
+    });
+  } catch(e) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "Token for authorization is invalid",
+      errorEnum: ErrorEnums.TokenInvalid
+    });
+    return;
+  }
+});
 
 export { router as GroupRouter };
