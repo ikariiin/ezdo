@@ -6,12 +6,14 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/CloseOutlined';
 import "../scss/task-label.scss";
 import { API_HOST, API_TODO_LABEL, API_TODOS } from '../../util/api-routes';
+import { Highlight } from '../../common/components/highlight';
 
 export interface TaskLabelProps {
   groupId: number;
   label?: string;
   todoId: number;
   refresh: () => void;
+  labelHighlight?: string;
 }
 
 @observer
@@ -53,7 +55,11 @@ export class TaskLabel extends React.Component<TaskLabelProps> {
       ...this.props.label.split('//')
        .filter(label => label.trim().length !== 0)
        .map((label, key) => (
-         <Chip variant="outlined" size="small" label={label} key={label} className="label-chip" onDelete={() => this.deleteLabel(key)} />
+         <Chip
+          variant={this.props.labelHighlight ? "default" : "outlined"} size="small"
+          label={label} color={this.props.labelHighlight ? "primary" : "default"}
+          key={label} className="label-chip"
+          onDelete={() => this.deleteLabel(key)} />
        )),
       <Chip
         key="add-label"

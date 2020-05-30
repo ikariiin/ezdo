@@ -1,0 +1,16 @@
+.date-filter-panel {
+  padding: .425rem 1rem;
+  margin-left: .4rem;
+  display: flex;
+
+  .date-input {
+    width: 130px;
+    margin: 0 .3rem;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    margin-left: .75rem;
+  }
+}

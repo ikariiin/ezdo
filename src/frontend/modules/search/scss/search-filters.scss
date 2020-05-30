@@ -1,0 +1,21 @@
+.search-filters-container {
+  padding: .5rem .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .search-filters {
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    padding: .15rem .2rem;
+
+    & > * {
+      margin: 0 .5rem;
+    }
+  
+    .header-icon {
+      margin-left: 1rem;
+    }
+  }
+}

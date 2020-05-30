@@ -4,6 +4,7 @@ import { Dashboard } from '../../dashboard/components/dashboard';
 import { Login } from '../../auth/components/login';
 import { Register } from '../../auth/components/register';
 import { Archive } from '../../archive/modules/archive';
+import { Search } from '../../search/components/search';
 
 export const Routes: React.FunctionComponent<{}> = ({}): JSX.Element => {
   const jwtToken = localStorage.getItem('jwtKey');
@@ -18,6 +19,9 @@ export const Routes: React.FunctionComponent<{}> = ({}): JSX.Element => {
       </Route>
       <Route exact path="/">
         <Dashboard />
+      </Route>
+      <Route exact path="/search">
+        <Search />
       </Route>
       <Route exact path="/archive">
         <Archive />

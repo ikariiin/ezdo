@@ -3,7 +3,7 @@ import { Typography, Button } from '@material-ui/core';
 import "../scss/archive.scss";
 import { API_HOST, API_GROUPS } from '../../util/api-routes';
 import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
 import { Todo } from '../../../../backend/entities/todo';
 import { Task } from '../../dashboard/components/task';
 
@@ -50,6 +50,19 @@ export class Archive extends React.Component<{}> {
     this.fetchArchives();
   }
 
+  @computed private get renderEmptyArchive(): React.ReactNode {
+    if(this.tasks.length !== 0) return null;
+
+    return (
+      <section className="empty-archives">
+        <div className="illustration" />
+        <Typography variant="h6">
+          Looks like the archives are incomplete...
+        </Typography>
+      </section>
+    );
+  }
+
   public render() {
     return (
       <section className="archive">
@@ -58,13 +71,14 @@ export class Archive extends React.Component<{}> {
             Archive
           </Typography>
           <div className="space" />
-          <Button variant="text" color="secondary" size="large" onClick={() => this.clearArchives()}>
+          <Button disabled={this.tasks.length === 0} variant="text" color="secondary" size="large" onClick={() => this.clearArchives()}>
             Clear Archive
           </Button>
         </section>
+        {this.renderEmptyArchive}
         <main className="tasks">
           {this.tasks.map(task => (
-            <Task {...task} refresh={() => this.fetchArchives()} refreshGroup={() => this.fetchArchives()} />
+            <Task {...task} isArchive refresh={() => this.fetchArchives()} refreshGroup={() => this.fetchArchives()} />
           ))}
         </main>
       </section>

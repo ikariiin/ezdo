@@ -5,6 +5,8 @@ import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import { ToDoDrawer } from './todo-drawer';
+import SearchIcon from '@material-ui/icons/Search';
+import { Link } from 'react-router-dom';
 
 @observer 
 export class NavBar extends React.Component<{}> {
@@ -30,6 +32,9 @@ export class NavBar extends React.Component<{}> {
             <Typography variant="h6" className="app-name">
               EZ Do
             </Typography>
+            <IconButton component={Link} to="/search">
+              <SearchIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </>

@@ -1,21 +1,27 @@
 import * as React from 'react';
-import { Paper, Typography, IconButton, Menu, MenuItem, ListItemIcon } from '@material-ui/core';
+import { Paper, Typography, IconButton, Menu, MenuItem, ListItemIcon, Tooltip } from '@material-ui/core';
 import { Todo } from '../../../../backend/entities/todo';
 import * as moment from 'moment';
 import "../scss/task.scss";
 import MoreIcon from '@material-ui/icons/MoreVertOutlined';
+import ArchiveIcon from '@material-ui/icons/ArchiveOutlined';
+import UnArchiveIcon from '@material-ui/icons/UnArchiveOutlined';
 import { observer } from 'mobx-react';
 import { observable, action } from 'mobx';
 import { TaskLabel } from './task-label';
 import { TaskMenu } from './task-menu';
-import { API_HOST, API_TODO_DELETE } from '../../util/api-routes';
+import { API_HOST, API_TODO_DELETE, API_TODOS } from '../../util/api-routes';
 import { TaskDeleteConfirm } from './dialogs/task-delete-confirm'
 import { TaskEdit } from './task-edit';
 import { TaskMove } from './dialogs/task-move';
+import { Highlight } from '../../common/components/highlight';
 
 export interface TaskProps extends Todo {
   refresh: () => void;
   refreshGroup: (id: number) => any;
+  isArchive?: boolean;
+  taskHighlight?: string;
+  labelHighlight?: string;
 }
 
 @observer
@@ -103,6 +109,24 @@ export class Task extends React.Component<TaskProps> {
     this.anchorEl = null;
   }
 
+  private async archiveTask(): Promise<void> {
+    const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.id}/archive`, {
+      method: "PATCH",
+      headers: {
+        Authorization: localStorage.getItem('jwtKey') || ''
+      }
+    });
+
+    const responseJSON = await response.json();
+
+    if(responseJSON.failed) {
+      console.error(responseJSON);
+      return;
+    }
+
+    this.props.refresh();
+  }
+
   public render() {
     if(this.editTask) {
       return <TaskEdit done={() => this.editDone()} todoId={this.props.id} onCancel={() => this.editTask = false} />;
@@ -124,9 +148,25 @@ export class Task extends React.Component<TaskProps> {
           currentGroupId={this.props.group} />
         <header className="task-header">
           {this.timeRender}
-          <IconButton size="small" onClick={ev => this.openMenu(ev)}>
-            <MoreIcon />
-          </IconButton>
+          {!this.props.isArchive && this.props.group !== -1 && (
+            <Tooltip title="Archive">
+              <IconButton size="small" onClick={() => this.archiveTask()}>
+                <ArchiveIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {this.props.group === -1 && (
+            <Tooltip title="Un-archive">
+              <IconButton size="small" onClick={() => this.openMoveMenu()}>
+                <UnArchiveIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          <Tooltip title="More actions">
+            <IconButton size="small" onClick={ev => this.openMenu(ev)}>
+              <MoreIcon />
+            </IconButton>
+          </Tooltip>
           <TaskMenu
             anchorEl={this.anchorEl}
             open={Boolean(this.anchorEl)}
@@ -136,14 +176,19 @@ export class Task extends React.Component<TaskProps> {
             onClose={() => this.closeMenu()} />
         </header>
         <Typography variant="body2" className="task-text">
-          {this.props.task}
+          {this.props.taskHighlight ? (
+            <Highlight
+              text={this.props.task}
+              highlight={this.props.taskHighlight} />
+          ) : this.props.task}
         </Typography>
         <TaskLabel
           refresh={this.props.refresh}
           groupId={this.props.group}
+          labelHighlight={this.props.labelHighlight}
           todoId={this.props.id}
           label={this.props.label} />
       </Paper>
-    )
+    );
   }
 }

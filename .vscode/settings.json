@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "database": "${workspaceFolder:todo-hackerearth}/todo.sqlite",
+      "driver": "SQLite",
+      "name": "sqlite",
+      "previewLimit": 50
+    }
+  ],
+  "sqltools.useNodeRuntime": true
+}

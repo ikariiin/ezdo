@@ -4,6 +4,7 @@ import { User } from '../entities/user';
 import { Groups } from '../entities/groups';
 import { ErrorEnums } from '../error-enums';
 import { Todo } from '../entities/todo';
+import { Like } from 'typeorm';
 
 const router = express.Router();
 
@@ -220,6 +221,53 @@ router.get("/:groupId", async (req: express.Request, res: express.Response) => {
     res.json({
       success: true,
       tasks
+    });
+  } catch(e) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "Token for authorization is invalid",
+      errorEnum: ErrorEnums.TokenInvalid
+    });
+    return;
+  }
+});
+
+router.get("/search/:groupName", async (req: express.Request, res: express.Response) => {
+  const jwtKey = req.headers.authorization;
+  if(!jwtKey) {
+    res.status(401);
+    res.json({
+      failed: true,
+      reason: "User is not authorized to request this content",
+      errorEnum: ErrorEnums.UserNotAuthorized
+    });
+    return;
+  }
+  
+  try {
+    const username = getUsernameFromJWT(jwtKey);
+    const users = req.db.getRepository(User);
+    const groups = req.db.getRepository(Groups);
+    const { groupName } = req.params;
+      
+    const user = await users.findOne({ username: username });
+    if(!user) {
+      res.status(404);
+      res.json({ failed: true, reason: "No groups found for this user", errorEnum: ErrorEnums.NoGroupsFound });
+      return;
+    }
+
+    const searchResult = await groups.find({
+      where: {
+        createdBy: username,
+        name: Like(`%${groupName}%`)
+      }
+    });
+
+    res.json({
+      success: true,
+      searchResult
     });
   } catch(e) {
     res.status(401);

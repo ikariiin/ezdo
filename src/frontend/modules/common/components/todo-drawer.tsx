@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
+import SearchIcon from '@material-ui/icons/Search';
 
 export interface ToDoDrawerProps {
   open: boolean;
@@ -32,6 +33,12 @@ export const ToDoDrawer: React.FunctionComponent<ToDoDrawerProps> = ({ open, clo
           <ArchiveIcon />
         </ListItemIcon>
         <ListItemText primary="Archive" />
+      </ListItem>
+      <ListItem button component={Link} to="/search" onClick={closeDrawer}>
+        <ListItemIcon>
+          <SearchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Search" />
       </ListItem>
       <Divider />
       <ListItem button>
