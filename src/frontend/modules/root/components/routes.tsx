@@ -5,6 +5,7 @@ import { Login } from '../../auth/components/login';
 import { Register } from '../../auth/components/register';
 import { Archive } from '../../archive/modules/archive';
 import { Search } from '../../search/components/search';
+import { About } from '../../about/components/about';
 
 export const Routes: React.FunctionComponent<{}> = ({}): JSX.Element => {
   const jwtToken = localStorage.getItem('jwtKey');
@@ -25,6 +26,9 @@ export const Routes: React.FunctionComponent<{}> = ({}): JSX.Element => {
       </Route>
       <Route exact path="/archive">
         <Archive />
+      </Route>
+      <Route exact path="/about">
+        <About />
       </Route>
       {!jwtToken && <Redirect to="/login" />}
     </>

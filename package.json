@@ -4,8 +4,10 @@
   "description": "Entry for StackHack",
   "main": "dist/backend/index.js",
   "scripts": {
-    "start": "webpack-dev-server --content-base src/frontend --hot --inline --open",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/backend/index.js",
+    "dev-server": "webpack-dev-server --content-base src/frontend --hot --inline --open",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && webpack"
   },
   "repository": {
     "type": "git",
@@ -56,5 +58,7 @@
     "webpack-cli": "3.3.11",
     "webpack-dev-server": "3.11.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }

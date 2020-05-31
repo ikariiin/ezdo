@@ -23,7 +23,7 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
   if(await compare(password, passwordFromDB)) {
     res.json({
       success: true,
-      token: jwt.sign({user: username}, 'peepee-poopoo-secret-ftw')
+      token: jwt.sign({user: username}, '0a8d5fec-f42d-4a00-aa01-cd1a5aded672')
     });
   } else {
     res.json({ failed: true, reason: "Password for user does not match", errorEnum: ErrorEnums.InvalidUserCredentials });
@@ -47,7 +47,7 @@ router.post('/register', async (req: express.Request, res: express.Response) => 
   });
 
   res.json({
-    token: jwt.sign({user: username}, 'peepee-poopoo-secret-ftw')
+    token: jwt.sign({user: username}, '0a8d5fec-f42d-4a00-aa01-cd1a5aded672')
   });
 });
 

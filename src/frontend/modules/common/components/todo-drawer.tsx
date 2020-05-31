@@ -6,6 +6,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
+import AboutIcon from '@material-ui/icons/Info';
 
 export interface ToDoDrawerProps {
   open: boolean;
@@ -46,6 +47,12 @@ export const ToDoDrawer: React.FunctionComponent<ToDoDrawerProps> = ({ open, clo
           <LogoutIcon />
         </ListItemIcon>
         <ListItemText primary="Logout" />
+      </ListItem>
+      <ListItem button component={Link} to="/about" onClick={closeDrawer}>
+        <ListItemIcon>
+          <AboutIcon />
+        </ListItemIcon>
+        <ListItemText primary="About" />
       </ListItem>
     </List>
   </Drawer>

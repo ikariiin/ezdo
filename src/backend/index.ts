@@ -10,9 +10,11 @@ import { User } from './entities/user';
 import { Todo } from './entities/todo';
 import { Command } from 'commander';
 import { setDB } from './middlewares/database';
+import { config } from 'dotenv';
+import { join, resolve } from 'path';
 
 async function startApp(dbPath: string = '') {
-  console.log("DB Path: ", dbPath);
+  console.log("DB Path: ", process.env.DATABASE || dbPath);
 
   const app = express();
   app.use(express.json());
@@ -20,24 +22,31 @@ async function startApp(dbPath: string = '') {
 
   const connection = await createConnection({
     type: "sqlite",
-    database: "F:\\Projects\\todo-hackerearth\\todo.sqlite",
+    database: process.env.DATABASE || dbPath,
     entities: [
       User,
       Groups,
       Todo
     ],
-    logging: true,
+    logging: false,
     synchronize: true
   });
+
+  app.use(express.static(resolve(join(__dirname, '../../dist'))));
 
   app.use(setDB(connection));
 
   app.use("/users", UserAuthRouter);
   app.use("/todo", TodoRouter);
   app.use("/groups", GroupRouter);
+  app.use("*", async (req: express.Request, res: express.Response) => {
+    res.sendFile(resolve(join(__dirname, '../../dist/index.html')));
+  });
 
-  app.listen(1337, () => console.log("Server started on port 1337"));
+  app.listen(process.env.HTTP_PORT, () => console.log("Server started on port " + process.env.HTTP_PORT));
 }
+
+config();
 
 const program = new Command();
 program

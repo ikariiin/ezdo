@@ -1,0 +1,112 @@
+├── .vscode
+│   ├── launch.json
+│   └── settings.json
+├── dist
+├── src
+│   ├── backend
+│   │   ├── entities
+│   │   │   ├── groups.ts
+│   │   │   ├── todo.ts
+│   │   │   └── user.ts
+│   │   ├── middlewares
+│   │   │   ├── api.ts
+│   │   │   └── database.ts
+│   │   ├── routes
+│   │   │   ├── group.ts
+│   │   │   ├── todo.ts
+│   │   │   └── user-auth.ts
+│   │   ├── error-enums.ts
+│   │   ├── index.ts
+│   │   └── util.ts
+│   ├── frontend
+│   │   ├── modules
+│   │   │   ├── about
+│   │   │   │   ├── components
+│   │   │   │   │   └── about.tsx
+│   │   │   │   └── scss
+│   │   │   │       └── about.scss
+│   │   │   ├── archive
+│   │   │   │   ├── modules
+│   │   │   │   │   └── archive.tsx
+│   │   │   │   └── scss
+│   │   │   │       └── archive.scss
+│   │   │   ├── auth
+│   │   │   │   ├── components
+│   │   │   │   │   ├── login.tsx
+│   │   │   │   │   └── register.tsx
+│   │   │   │   └── scss
+│   │   │   │       ├── login.scss
+│   │   │   │       └── register.scss
+│   │   │   ├── common
+│   │   │   │   ├── components
+│   │   │   │   │   ├── highlight.tsx
+│   │   │   │   │   ├── navbar.tsx
+│   │   │   │   │   └── todo-drawer.tsx
+│   │   │   │   └── scss
+│   │   │   │       ├── highlight.scss
+│   │   │   │       ├── navbar.scss
+│   │   │   │       └── todo-drawer.scss
+│   │   │   ├── dashboard
+│   │   │   │   ├── components
+│   │   │   │   │   ├── dialogs
+│   │   │   │   │   │   ├── group-delete-confirm.tsx
+│   │   │   │   │   │   ├── task-delete-confirm.tsx
+│   │   │   │   │   │   └── task-move.tsx
+│   │   │   │   │   ├── dashboard.tsx
+│   │   │   │   │   ├── group-placeholder.tsx
+│   │   │   │   │   ├── group.tsx
+│   │   │   │   │   ├── new-task.tsx
+│   │   │   │   │   ├── task-edit.tsx
+│   │   │   │   │   ├── task-label.tsx
+│   │   │   │   │   ├── task-menu.tsx
+│   │   │   │   │   └── task.tsx
+│   │   │   │   └── scss
+│   │   │   │       ├── dashboard.scss
+│   │   │   │       ├── group-placeholder.scss
+│   │   │   │       ├── group.scss
+│   │   │   │       ├── new-task.scss
+│   │   │   │       ├── task-edit.scss
+│   │   │   │       ├── task-label.scss
+│   │   │   │       └── task.scss
+│   │   │   ├── root
+│   │   │   │   ├── components
+│   │   │   │   │   ├── app-base.tsx
+│   │   │   │   │   ├── mui-theme.ts
+│   │   │   │   │   └── routes.tsx
+│   │   │   │   └── scss
+│   │   │   │       └── app-base.scss
+│   │   │   ├── search
+│   │   │   │   ├── components
+│   │   │   │   │   ├── date-filter-panel.tsx
+│   │   │   │   │   ├── group-search-result.tsx
+│   │   │   │   │   ├── search-filters.tsx
+│   │   │   │   │   ├── search-input.tsx
+│   │   │   │   │   └── search.tsx
+│   │   │   │   └── scss
+│   │   │   │       ├── date-filter-panel.scss
+│   │   │   │       ├── group-search-result.scss
+│   │   │   │       ├── search-filters.scss
+│   │   │   │       ├── search-input.scss
+│   │   │   │       └── search.scss
+│   │   │   └── util
+│   │   │       ├── api-routes.ts
+│   │   │       └── is-mobile.ts
+│   │   ├── index.html
+│   │   └── mounter.tsx
+│   ├── resources
+│   │   ├── background
+│   │   │   ├── dylan-alcock-4n53CxyQ7MA-unsplash.jpg
+│   │   │   ├── jeremy-thomas-E0AHdsENmDg-unsplash.jpg
+│   │   │   └── pk-TKE9nLVNlto-unsplash.jpg
+│   │   └── illustration
+│   │       ├── undraw_dreamer_gxxi.svg
+│   │       ├── undraw_empty_xct9.svg
+│   │       ├── undraw_enter_uhqk.svg
+│   │       └── undraw_searching_p5ux.svg
+│   └── custom.d.ts
+├── .gitignore
+├── package-lock.json
+├── package.json
+├── todo.sqlite
+├── tsconfig.json
+└── webpack.config.js

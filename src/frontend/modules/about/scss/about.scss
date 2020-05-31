@@ -1,0 +1,19 @@
+.about {
+  padding-top: 10vh;
+  max-width: 100vw;
+  overflow-x: hidden;
+
+  .about-paper {
+    padding: 3rem;
+    margin: 0 .5rem 10vh .5rem;
+
+    pre {
+      font-family: "Overpass Mono", "Consolas", monospace;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.8;
+      margin: 1rem 0;
+      opacity: .7;
+    }
+  }
+}

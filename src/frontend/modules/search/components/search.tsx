@@ -133,8 +133,8 @@ class SearchComponent extends React.Component<WithSnackbarProps> {
     }
 
     //@ts-ignore
-    return this.searchResult.map((group: Groups) => (
-      <GroupSearchResult {...group} />
+    return this.searchResult.map((group: Groups, key: number) => (
+      <GroupSearchResult {...group} index={key + 1} key={group.id} />
     ));
   }
 

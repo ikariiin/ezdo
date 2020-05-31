@@ -34,6 +34,7 @@ class DashboardComponent extends React.Component<WithSnackbarProps> {
         variant: "error"
       });
       console.error(responseJson);
+      return;
     }
 
     this.groups = responseJson;
