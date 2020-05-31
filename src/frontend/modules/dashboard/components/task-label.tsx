@@ -6,9 +6,9 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/CloseOutlined';
 import "../scss/task-label.scss";
 import { API_HOST, API_TODO_LABEL, API_TODOS } from '../../util/api-routes';
-import { Highlight } from '../../common/components/highlight';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
-export interface TaskLabelProps {
+export interface TaskLabelProps extends WithSnackbarProps {
   groupId: number;
   label?: string;
   todoId: number;
@@ -17,7 +17,7 @@ export interface TaskLabelProps {
 }
 
 @observer
-export class TaskLabel extends React.Component<TaskLabelProps> {
+class TaskLabelComponent extends React.Component<TaskLabelProps> {
   @observable private labelInput: boolean = false;
   @observable private newLabel: string = '';
 
@@ -33,6 +33,9 @@ export class TaskLabel extends React.Component<TaskLabelProps> {
 
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -119,3 +122,5 @@ export class TaskLabel extends React.Component<TaskLabelProps> {
     )
   }
 }
+
+export const TaskLabel = withSnackbar(TaskLabelComponent);

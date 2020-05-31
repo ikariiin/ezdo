@@ -5,8 +5,9 @@ import { Groups } from '../../../../../backend/entities/groups';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import CloseIcon from '@material-ui/icons/Close';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
-export interface TaskMoveProps extends DialogProps {
+export interface TaskMoveProps extends DialogProps, WithSnackbarProps {
   currentGroupId: number;
   close: () => any;
   todoId: number;
@@ -14,7 +15,7 @@ export interface TaskMoveProps extends DialogProps {
 }
 
 @observer
-export class TaskMove extends React.Component<TaskMoveProps> {
+class TaskMoveComponent extends React.Component<TaskMoveProps> {
   @observable private groups: Array<Groups> = [];
   private async fetchGroups(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_GROUPS}`, {
@@ -23,15 +24,18 @@ export class TaskMove extends React.Component<TaskMoveProps> {
       },
       method: "GET"
     });
-    const responseJson = await response.json();
+    const responseJSON = await response.json();
 
-    if(responseJson.failed) {
+    if(responseJSON.failed) {
       // We messed up.
-      // TODO show error snackbar
-      console.error(responseJson);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
+      console.error(responseJSON);
+      return;
     }
 
-    this.groups = responseJson;
+    this.groups = responseJSON;
   }
 
   public componentDidMount() {
@@ -52,6 +56,9 @@ export class TaskMove extends React.Component<TaskMoveProps> {
 
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -91,3 +98,5 @@ export class TaskMove extends React.Component<TaskMoveProps> {
     )
   }
 }
+
+export const TaskMove = withSnackbar(TaskMoveComponent);

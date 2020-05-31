@@ -7,15 +7,16 @@ import { API_HOST, API_TODO_CREATE } from '../../util/api-routes';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { DateTimePicker } from '@material-ui/pickers';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
-export interface NewTaskProps {
+export interface NewTaskProps extends WithSnackbarProps {
   refresh: () => void;
   groupId: number;
   cancelCreation: () => void;
 }
 
 @observer
-export class NewTask extends React.Component<NewTaskProps> {
+class NewTaskComponent extends React.Component<NewTaskProps> {
   @observable private task: string = "";
   @observable private label: string = "";
   @observable private dueDate?: Date = new Date();
@@ -29,6 +30,9 @@ export class NewTask extends React.Component<NewTaskProps> {
   private async createTask(): Promise<void> {
     if(this.task.trim().length === 0) {
       // snackbar time!
+      this.props.enqueueSnackbar("Cannot create an empty task!", {
+        variant: "info"
+      });
       return;
     }
 
@@ -48,7 +52,9 @@ export class NewTask extends React.Component<NewTaskProps> {
 
     const responseJSON = await response.json();
     if(responseJSON.failed) {
-      // Idk... man
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       console.error(responseJSON);
       return;
     }
@@ -100,3 +106,5 @@ export class NewTask extends React.Component<NewTaskProps> {
     )
   }
 }
+
+export const NewTask = withSnackbar(NewTaskComponent);

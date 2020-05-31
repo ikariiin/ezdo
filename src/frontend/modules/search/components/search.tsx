@@ -11,6 +11,8 @@ import { Groups } from '../../../../backend/entities/groups';
 import { GroupSearchResult } from './group-search-result';
 import { SearchFilter } from './search-filters';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import { Redirect } from 'react-router-dom';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 
 export enum SearchCategory {
   Task = "Task",
@@ -19,12 +21,13 @@ export enum SearchCategory {
 }
 
 @observer
-export class Search extends React.Component<{}> {
+class SearchComponent extends React.Component<WithSnackbarProps> {
   @observable private activeSearchCategory: SearchCategory = SearchCategory.Task;
   @observable private search: string = "";
   @observable private searchResult: Array<Todo|Groups> = [];
   @observable private minDateFilter?: Date|null = null;
   @observable private maxDateFilter?: Date|null = null;
+  @observable private notAuthorized: boolean = false;
 
   @computed private get noResults(): React.ReactNode {
     if(
@@ -45,6 +48,12 @@ export class Search extends React.Component<{}> {
     )
   }
 
+  public componentDidMount() {
+    if(!localStorage.getItem('jwtKey')) {
+      this.notAuthorized = true;
+    }
+  }
+
   @action private async searchGroups(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_GROUPS}/search/${encodeURIComponent(this.search)}`, {
       method: "GET",
@@ -56,6 +65,9 @@ export class Search extends React.Component<{}> {
     const responseJSON = await response.json();
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -84,6 +96,9 @@ export class Search extends React.Component<{}> {
     const responseJSON = await response.json();
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -126,6 +141,7 @@ export class Search extends React.Component<{}> {
   public render() {
     return (
       <section className="search">
+        {this.notAuthorized && <Redirect to="/login" />}
         <section className="search-input-container">
           <SearchInput
             searchCategory={this.activeSearchCategory}
@@ -141,6 +157,7 @@ export class Search extends React.Component<{}> {
           <SearchFilter
             minDate={this.minDateFilter}
             maxDate={this.maxDateFilter}
+            activeCategory={this.activeSearchCategory}
             onChangeMinDate={(date: MaterialUiPickersDate|null|undefined) => this.minDateFilter = date?.toDate()}
             onChangeMaxDate={(date: MaterialUiPickersDate|null|undefined) => this.maxDateFilter = date?.toDate()} />
           )}
@@ -155,3 +172,5 @@ export class Search extends React.Component<{}> {
     );
   }
 }
+
+export const Search = withSnackbar(SearchComponent);

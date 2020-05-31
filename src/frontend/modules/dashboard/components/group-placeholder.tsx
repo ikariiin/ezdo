@@ -6,13 +6,14 @@ import { observer } from 'mobx-react';
 import { observable, computed } from 'mobx';
 import ArrowRightIcon from '@material-ui/icons/KeyboardArrowRightTwoTone';
 import { API_GROUPS, API_HOST } from '../../util/api-routes';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
-export interface GroupPlaceholderProps {
+export interface GroupPlaceholderProps extends WithSnackbarProps {
   refresh: () => void;
 }
 
 @observer
-export class GroupPlaceholder extends React.Component<GroupPlaceholderProps> {
+class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
   @observable private editMode: boolean = false;
   @observable private groupName: string = "";
 
@@ -32,7 +33,15 @@ export class GroupPlaceholder extends React.Component<GroupPlaceholderProps> {
          name: this.groupName
        })
     });
-    console.log(await response.json());
+    const responseJSON = await response.json();
+    
+    if(responseJSON.failed) {
+      console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
+      return;
+    }
 
     this.props.refresh();
     this.resetState();
@@ -80,3 +89,5 @@ export class GroupPlaceholder extends React.Component<GroupPlaceholderProps> {
     );
   }
 }
+
+export const GroupPlaceholder = withSnackbar(GroupPlaceholderComponent);

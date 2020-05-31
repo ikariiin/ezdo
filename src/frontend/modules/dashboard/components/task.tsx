@@ -15,8 +15,9 @@ import { TaskDeleteConfirm } from './dialogs/task-delete-confirm'
 import { TaskEdit } from './task-edit';
 import { TaskMove } from './dialogs/task-move';
 import { Highlight } from '../../common/components/highlight';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
-export interface TaskProps extends Todo {
+export interface TaskProps extends Todo, WithSnackbarProps {
   refresh: () => void;
   refreshGroup: (id: number) => any;
   isArchive?: boolean;
@@ -25,7 +26,7 @@ export interface TaskProps extends Todo {
 }
 
 @observer
-export class Task extends React.Component<TaskProps> {
+class TaskComponent extends React.Component<TaskProps> {
   @observable private anchorEl: HTMLButtonElement|null = null;
   @observable private timeFromNow: string = "";
   @observable private deleteDialog: boolean = false;
@@ -79,7 +80,14 @@ export class Task extends React.Component<TaskProps> {
       }
     });
 
-    console.log(await response.json());
+    const responseJSON = await response.json();
+    if(responseJSON.failed) {
+      console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
+      return;
+    }
     this.deleteDialog = false;
     this.anchorEl = null;
     this.props.refresh();
@@ -121,6 +129,9 @@ export class Task extends React.Component<TaskProps> {
 
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -192,3 +203,5 @@ export class Task extends React.Component<TaskProps> {
     );
   }
 }
+
+export const Task = withSnackbar(TaskComponent);

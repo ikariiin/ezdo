@@ -6,15 +6,18 @@ import { observer } from 'mobx-react';
 import { observable, action } from 'mobx';
 import { Groups } from '../../../../backend/entities/groups';
 import { GroupPlaceholder } from './group-placeholder';
+import { Redirect } from 'react-router-dom';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
 export interface GroupUpdate {
   [key: number]: number
 }
 
 @observer
-export class Dashboard extends React.Component<{}> {
+class DashboardComponent extends React.Component<WithSnackbarProps> {
   @observable groups: Array<Groups> = [];
   @observable groupUpdates: GroupUpdate = {};
+  @observable notAuthrorized: boolean = false;
 
   private async getGroups(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_GROUPS}`, {
@@ -27,7 +30,9 @@ export class Dashboard extends React.Component<{}> {
 
     if(responseJson.failed) {
       // We messed up.
-      // TODO show error snackbar
+      this.props.enqueueSnackbar(responseJson.reason, {
+        variant: "error"
+      });
       console.error(responseJson);
     }
 
@@ -45,6 +50,9 @@ export class Dashboard extends React.Component<{}> {
 
   public componentDidMount(): void {
     this.getGroups();
+    if(!localStorage.getItem('jwtKey')) {
+      this.notAuthrorized = true;
+    }
   }
 
   @action private refreshGroup(id: number): void {
@@ -54,6 +62,7 @@ export class Dashboard extends React.Component<{}> {
   public render() {
     return (
       <main className="dashboard">
+        {this.notAuthrorized && <Redirect to="/login" />}
         {this.groups.map(group => (
           <Group
             refresh={() => this.getGroups()}
@@ -66,3 +75,5 @@ export class Dashboard extends React.Component<{}> {
     );
   }
 }
+
+export const Dashboard = withSnackbar(DashboardComponent);

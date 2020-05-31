@@ -41,7 +41,7 @@ export const ToDoDrawer: React.FunctionComponent<ToDoDrawerProps> = ({ open, clo
         <ListItemText primary="Search" />
       </ListItem>
       <Divider />
-      <ListItem button>
+      <ListItem button onClick={() => { localStorage.removeItem("jwtKey"); window.location.pathname = "/login"; }}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>

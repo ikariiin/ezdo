@@ -5,9 +5,10 @@ import "../scss/login.scss";
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import { API_HOST, API_LOGIN } from '../../util/api-routes';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 
 @observer
-export class Login extends React.Component<{}> {
+class LoginComponent extends React.Component<WithSnackbarProps> {
   @observable private username: string = "";
   @observable private password: string = "";
 
@@ -24,10 +25,15 @@ export class Login extends React.Component<{}> {
     if(tokenPayload.failed) {
       // We have encountered an error, duh!
       console.error(tokenPayload);
+      this.props.enqueueSnackbar(tokenPayload.reason, {
+        variant: "error"
+      });
       return;
     } 
 
     localStorage.setItem('jwtKey', tokenPayload.token);
+    // same reason as register.tsx, hard-reload
+    window.location.pathname = "/";
   }
 
   public render() {
@@ -67,3 +73,5 @@ export class Login extends React.Component<{}> {
     )
   }
 }
+
+export const Login = withSnackbar(LoginComponent);

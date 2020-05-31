@@ -8,15 +8,16 @@ import { Todo } from '../../../../backend/entities/todo';
 import { DateTimePicker } from '@material-ui/pickers';
 import EditIcon from '@material-ui/icons/EditTwoTone';
 import CancelIcon from '@material-ui/icons/CloseRounded';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
-export interface TaskEditProps {
+export interface TaskEditProps extends WithSnackbarProps {
   done: () => any;
   todoId: number;
   onCancel: () => any;
 }
 
 @observer
-export class TaskEdit extends React.Component<TaskEditProps> {
+class TaskEditComponent extends React.Component<TaskEditProps> {
   @observable private task: string = "";
   @observable private dueDate: Date = new Date();
 
@@ -31,6 +32,9 @@ export class TaskEdit extends React.Component<TaskEditProps> {
 
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -53,14 +57,17 @@ export class TaskEdit extends React.Component<TaskEditProps> {
       body: JSON.stringify({ dueDate: this.dueDate, task: this.task })
     });
 
-    const resposneJSON = await response.json();
+    const responseJSON = await response.json();
     
-    if(resposneJSON.failed) {
-      console.error(resposneJSON);
+    if(responseJSON.failed) {
+      console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
-    console.log(resposneJSON);
+    console.log(responseJSON);
     this.props.done();
   }
 
@@ -106,3 +113,5 @@ export class TaskEdit extends React.Component<TaskEditProps> {
     );
   }
 }
+
+export const TaskEdit = withSnackbar(TaskEditComponent);

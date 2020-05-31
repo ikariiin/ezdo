@@ -4,15 +4,26 @@ import "../scss/register.scss";
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import { API_HOST, API_REGISTER } from '../../util/api-routes';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
 @observer
-export class Register extends React.Component<{}> {
+class RegisterComponent extends React.Component<WithSnackbarProps> {
   @observable private username: string = "";
   @observable private password: string = "";
   @observable private passwordRe: string = "";
 
   private async apiRegister(): Promise<void> {
-    if(this.password !== this.passwordRe) return;
+    if(this.username.trim().length === 0) {
+      this.props.enqueueSnackbar("Username cannot be blank or consist of just spaces!", {
+        variant: "warning"
+      });
+    }
+    if(this.password !== this.passwordRe) {
+      this.props.enqueueSnackbar("Passwords do not match", {
+        variant: "warning",
+      });
+      return;
+    }
 
     const response = await fetch(`${API_HOST}${API_REGISTER}`, {
       method: "POST",
@@ -24,7 +35,17 @@ export class Register extends React.Component<{}> {
     });
     const tokenPayload = await response.json();
 
+    if(tokenPayload.failed) {
+      console.log(tokenPayload);
+      this.props.enqueueSnackbar(tokenPayload.reason, {
+        variant: "error",
+      });
+      return;
+    }
+
     localStorage.setItem('jwtKey', tokenPayload.token);
+    // Hard reload, otherwise the localStorage dependent stuff in Navbar.tsx would not update
+    window.location.pathname = "/";
   }
 
   public render() {
@@ -77,3 +98,5 @@ export class Register extends React.Component<{}> {
     );
   }
 }
+
+export const Register = withSnackbar(RegisterComponent);

@@ -6,10 +6,13 @@ import { observer } from 'mobx-react';
 import { observable, computed } from 'mobx';
 import { Todo } from '../../../../backend/entities/todo';
 import { Task } from '../../dashboard/components/task';
+import { Redirect } from 'react-router-dom';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
 @observer
-export class Archive extends React.Component<{}> {
+class ArchiveComponent extends React.Component<WithSnackbarProps> {
   @observable private tasks: Array<Todo> = [];
+  @observable private notAuthorized: boolean = false;
 
   private async fetchArchives(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_GROUPS}/-1`, {
@@ -23,6 +26,9 @@ export class Archive extends React.Component<{}> {
     
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -40,6 +46,9 @@ export class Archive extends React.Component<{}> {
     const responseJSON = await response.json();
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -48,6 +57,9 @@ export class Archive extends React.Component<{}> {
 
   public componentDidMount() {
     this.fetchArchives();
+    if(!localStorage.getItem("jwtKey")) {
+      this.notAuthorized = true;
+    }
   }
 
   @computed private get renderEmptyArchive(): React.ReactNode {
@@ -66,6 +78,7 @@ export class Archive extends React.Component<{}> {
   public render() {
     return (
       <section className="archive">
+        {this.notAuthorized && <Redirect to="/login" />}
         <section className="header">
           <Typography variant="h4">
             Archive
@@ -85,3 +98,5 @@ export class Archive extends React.Component<{}> {
     );
   }
 }
+
+export const Archive = withSnackbar(ArchiveComponent);

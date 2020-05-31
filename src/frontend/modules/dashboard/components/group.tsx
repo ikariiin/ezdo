@@ -10,8 +10,9 @@ import { Todo } from '../../../../backend/entities/todo';
 import { API_HOST, API_TODOS, API_GROUPS } from '../../util/api-routes';
 import { Task } from './task';
 import { GroupDeleteConfirm } from './dialogs/group-delete-confirm';
+import { WithSnackbarProps, withSnackbar } from 'notistack';
 
-export interface GroupProps {
+export interface GroupProps extends WithSnackbarProps {
   title: string;
   id: number;
   refreshGroup: (groupId: number) => any;
@@ -20,7 +21,7 @@ export interface GroupProps {
 }
 
 @observer
-export class Group extends React.Component<GroupProps> {
+class GroupComponent extends React.Component<GroupProps> {
   @observable private createMode: boolean = false;
   @observable private tasks: Array<Todo> = [];
   @observable private confirmDelete: boolean = false;
@@ -36,6 +37,9 @@ export class Group extends React.Component<GroupProps> {
 
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -91,6 +95,9 @@ export class Group extends React.Component<GroupProps> {
 
     if(responseJSON.failed) {
       console.error(responseJSON);
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
       return;
     }
 
@@ -127,3 +134,5 @@ export class Group extends React.Component<GroupProps> {
     )
   }
 }
+
+export const Group = withSnackbar(GroupComponent);

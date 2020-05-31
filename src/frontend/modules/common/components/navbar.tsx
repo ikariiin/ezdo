@@ -32,9 +32,11 @@ export class NavBar extends React.Component<{}> {
             <Typography variant="h6" className="app-name">
               EZ Do
             </Typography>
-            <IconButton component={Link} to="/search">
-              <SearchIcon />
-            </IconButton>
+            {isLoggedIn && (
+              <IconButton component={Link} to="/search">
+                <SearchIcon />
+              </IconButton>
+            )}
           </Toolbar>
         </AppBar>
       </>

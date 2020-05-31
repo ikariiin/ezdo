@@ -7,6 +7,7 @@ import DateIcon from '@material-ui/icons/DateRange';
 
 export interface DateFilterProps extends SearchFilterProps {
   close: () => any;
+  disabled: boolean;
 }
 
 export class DateFilterPanel extends React.Component<DateFilterProps> {
