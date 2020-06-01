@@ -38,6 +38,9 @@ export async function searchGroups(req: express.Request, res: express.Response):
       success: true,
       searchResult
     });
+    req.logger.info(`${username} searched for groups with ${groupName}.`, {
+      from: "search-group"
+    });
   } catch(e) {
     invalidToken(res);
     return;

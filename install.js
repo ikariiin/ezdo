@@ -20,11 +20,22 @@ const envConfig = {
 // Get a port form the user
 rl.question("Port to listen to in the HTTP server(8080): ", (port) => {
   if(port.trim().length === 0) {
-  envConfig.HTTP_PORT = 8080;
+    envConfig.HTTP_PORT = 8080;
   } else {
-  envConfig.HTTP_PORT = Number(port);
+    envConfig.HTTP_PORT = Number(port);
   }
-  rl.close();
+  
+  const logFile = path.join(__dirname, "logs/ezdo.log");
+  rl.question(`Path to log file(${logFile}): `, (file) => {
+    if(file.trim().length === 0) {
+      envConfig.LOG_FILE = logFile;
+    } else {
+      envConfig.LOG_FILE = file;
+    }
+    fs.closeSync(fs.openSync(envConfig.LOG_FILE, 'w'));
+
+    rl.close();
+  });
 });
 
 rl.on('close', () => {

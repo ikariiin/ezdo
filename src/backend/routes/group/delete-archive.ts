@@ -33,6 +33,7 @@ export async function deleteArchive(req: express.Request, res: express.Response)
       success: true,
       removalResult
     });
+    req.logger.info(`${username} cleared the archive.`);
   } catch(e) {
     invalidToken(res);
     return;

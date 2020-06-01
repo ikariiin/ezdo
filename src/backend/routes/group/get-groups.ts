@@ -28,6 +28,9 @@ export async function getGroups(req: express.Request, res: express.Response): Pr
 
     const userGroups = await groups.find({ createdBy: user.username });
     res.json(userGroups);
+    req.logger.info(`${username} requested all groups.`, {
+      from: "get-groups"
+    });
   } catch (e) {
     invalidToken(res);
     return;

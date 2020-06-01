@@ -12,6 +12,7 @@ import { Command } from 'commander';
 import { setDB } from './middlewares/database';
 import { config } from 'dotenv';
 import { join, resolve } from 'path';
+import { logger } from './middlewares/logger';
 
 async function startApp(dbPath: string = '') {
   console.log("DB Path: ", process.env.DATABASE || dbPath);
@@ -19,6 +20,7 @@ async function startApp(dbPath: string = '') {
   const app = express();
   app.use(express.json());
   app.use(apiMiddleWare);
+  app.use(logger);
 
   const connection = await createConnection({
     type: "sqlite",

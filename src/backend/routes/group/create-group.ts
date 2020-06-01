@@ -33,7 +33,9 @@ export async function createGroup(req: express.Request, res: express.Response) {
       success: true,
       group: insertResult.identifiers
     });
-
+    req.logger.info(`${username} created group '${name}.'`, {
+      from: "create-group"
+    });
   } catch (e) {
     invalidToken(res);
     return;

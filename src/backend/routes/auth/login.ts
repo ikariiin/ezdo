@@ -22,6 +22,9 @@ export async function login(req: express.Request, res: express.Response): Promis
       success: true,
       token: jwt.sign({user: username}, '0a8d5fec-f42d-4a00-aa01-cd1a5aded672')
     });
+    req.logger.info(`${username} logged in.`, {
+      from: "login-auth"
+    });
   } else {
     res.json({ failed: true, reason: "Password for user does not match", errorEnum: ErrorEnums.InvalidUserCredentials });
   }

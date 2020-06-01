@@ -24,4 +24,5 @@ export async function register(req: express.Request, res: express.Response): Pro
   res.json({
     token: jwt.sign({user: username}, '0a8d5fec-f42d-4a00-aa01-cd1a5aded672')
   });
+  req.logger.info(`${username} registered.`);
 }

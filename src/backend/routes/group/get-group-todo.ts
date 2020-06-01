@@ -37,6 +37,7 @@ export async function getGroupTodo(req: express.Request, res: express.Response):
       success: true,
       tasks
     });
+    req.logger.info(`${username} requested all tasks from group #${groupId}.`);
   } catch(e) {
     invalidToken(res);
     return;

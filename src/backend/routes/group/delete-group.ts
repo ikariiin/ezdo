@@ -42,6 +42,7 @@ export async function deleteGroup(req: express.Request, res: express.Response): 
       success: true,
       removalResult
     });
+    req.logger.info(`${username} deleted group #${groupId}.`)
   } catch (e) {
     invalidToken(res);
     return;
