@@ -22,25 +22,46 @@
     .illustration {
       background: url("../../../../resources/illustration/undraw_searching_p5ux.svg");
       background-size: cover;
-      height: 270px;
+      height: 300px;
       width: 420px;
       margin-bottom: 1.5rem;
     }
   }
 
-  .filter-and-results {
+  .results {
     flex-grow: 1;
     display: grid;
-    grid-template-columns: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    height: 0;
+    & > * {
+      margin: .5rem;
+    }
+  }
+}
 
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .search {
+    height: auto;
+    margin-top: .5rem;
+
+    .search-input-container {
+      flex-direction: column;
+      margin-bottom: .5rem;
+      height: auto;
+    }
     .results {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr;
       height: 0;
-      & > * {
-        margin: .5rem;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 0 .5rem;
+
+      .illustration {
+        width: 400px;
+        height: 290px;
       }
     }
   }
-  
 }

@@ -8,6 +8,8 @@ import { Groups } from '../../../../backend/entities/groups';
 import { GroupPlaceholder } from './group-placeholder';
 import { Redirect } from 'react-router-dom';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
+import { isMobile } from '../../util/is-mobile';
+import { MobileDashboard } from './mobile-dashboard';
 
 export interface GroupUpdate {
   [key: number]: number
@@ -61,6 +63,9 @@ class DashboardComponent extends React.Component<WithSnackbarProps> {
   }
 
   public render() {
+    if(isMobile()){
+      return <MobileDashboard />;
+    }
     return (
       <main className="dashboard">
         {this.notAuthrorized && <Redirect to="/login" />}

@@ -44,5 +44,17 @@
     flex-grow: 1;
     overflow: auto;
     height: 100px;
+
+    .task-create-button {
+      background: rgba(0,0,0,.7);
+      border-radius: 5px;
+      margin: .75rem 0;
+      display: flex;
+      align-items: center;
+      padding: .75rem;
+      justify-content: center;
+      cursor: pointer;
+      color: #01A8D5;
+    }
   }
 }

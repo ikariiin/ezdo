@@ -3,13 +3,15 @@ import { Typography, Button, TextField } from '@material-ui/core';
 import "../scss/group-placeholder.scss";
 import AddIcon from '@material-ui/icons/AddOutlined';
 import { observer } from 'mobx-react';
-import { observable, computed } from 'mobx';
+import { observable, computed, action } from 'mobx';
 import ArrowRightIcon from '@material-ui/icons/KeyboardArrowRightTwoTone';
 import { API_GROUPS, API_HOST } from '../../util/api-routes';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 
 export interface GroupPlaceholderProps extends WithSnackbarProps {
   refresh: () => void;
+  className?: string;
+  createMode?: boolean;
 }
 
 @observer
@@ -23,6 +25,12 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
   }
 
   private async createGroup(): Promise<void> {
+    if(this.groupName.trim().length === 0) {
+      this.props.enqueueSnackbar("Group name cannot be empty or entirely spaces.", {
+        variant: "error"
+      });
+      return;
+    }
     const response = await fetch(`${API_HOST}${API_GROUPS}`, {
       method: "POST",
       headers: {
@@ -43,8 +51,16 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
       return;
     }
 
+    this.props.enqueueSnackbar(`Created group "${this.groupName}" successfully.`, {
+      variant: "success"
+    });
     this.props.refresh();
     this.resetState();
+  }
+
+  @action private closeEditMode(ev: React.MouseEvent<HTMLButtonElement>): void {
+    ev.stopPropagation();
+    this.editMode = false;
   }
 
   @computed public get content(): JSX.Element {
@@ -74,6 +90,9 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
           label="Group Name" />
         <br />
         <br />
+        <Button variant="text" onClick={(ev: React.MouseEvent<HTMLButtonElement>) => this.closeEditMode(ev)}>
+          Cancel
+        </Button>
         <Button variant="text" color="secondary" onClick={() => this.createGroup()}>
           Create group <ArrowRightIcon />
         </Button>
@@ -81,9 +100,15 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
     );
   }
 
+  @action public componentDidMount() {
+    if(this.props.createMode) {
+      this.editMode = true;
+    }
+  }
+
   public render() {
     return (
-      <section className={`group-placeholder ${this.editMode && 'edit-mode'}`} onClick={() => this.editMode = true}>
+      <section className={`group-placeholder ${this.editMode && 'edit-mode'} ${this.props.className}`} onClick={() => { if(!this.editMode) { this.editMode = true } }}>
         {this.content}
       </section>
     );

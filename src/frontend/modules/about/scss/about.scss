@@ -14,6 +14,17 @@
       line-height: 1.8;
       margin: 1rem 0;
       opacity: .7;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .about {
+    padding-top: 2vh;
+    .about-paper {
+      padding: 1rem;
     }
   }
 }

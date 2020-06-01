@@ -6,4 +6,4 @@ export const API_TODOS = "/api/todo";
 export const API_TODO_LABEL = "/api/todo/label";
 export const API_TODO_DELETE = "/api/todo/delete";
 export const API_TODO_MOVE = "/api/todo/move";
-export const API_HOST = "http://localhost:8080";
+export const API_HOST = "";

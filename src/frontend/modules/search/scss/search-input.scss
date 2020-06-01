@@ -45,3 +45,13 @@
 .category-menu {
   width: calc(7vw + 1rem);
 }
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .search-input {
+    width: calc(100% - 1rem);
+    margin: 0 .5rem;
+  }
+  .category-menu {
+    width: calc(25vw);
+  }
+}

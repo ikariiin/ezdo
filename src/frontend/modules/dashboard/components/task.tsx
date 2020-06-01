@@ -49,16 +49,26 @@ class TaskComponent extends React.Component<TaskProps> {
     if(this.isExpired()) {
       return ( 
         <time className="date">
-          Already expired on {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
+          Expired on {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
+          {
+            this.props.group === -1 && (
+              <div className="archive-notice">Task has been archived</div>
+            )
+          }
         </time>
       );
     }
 
     return (
       <time className="date">
-        Due by {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
+        Due on {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
         <br />
         or, due {this.timeFromNow.includes("minutes") ? <span className="warn">{this.timeFromNow}</span> : this.timeFromNow}
+        {
+          this.props.group === -1 && (
+            <div className="archive-notice">Task has been archived</div>
+          )
+        }
       </time>
     );
   }
@@ -144,7 +154,7 @@ class TaskComponent extends React.Component<TaskProps> {
     }
 
     return (
-      <Paper className={`task ${this.isExpired() && 'expired'}`} elevation={0}>
+      <Paper className={`task ${this.isExpired() && 'expired'} ${this.props.group === -1 && 'archived'}`} elevation={0}>
         <TaskDeleteConfirm
           onClose={() => this.closeDialogue()}
           close={() => this.closeDialogue()}

@@ -30,7 +30,7 @@ export class NavBar extends React.Component<{}> {
               </IconButton>
             )}
             <Typography variant="h6" className="app-name">
-              EZ Do
+              EZDo
             </Typography>
             {isLoggedIn && (
               <IconButton component={Link} to="/search">

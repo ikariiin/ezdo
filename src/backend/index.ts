@@ -36,9 +36,9 @@ async function startApp(dbPath: string = '') {
 
   app.use(setDB(connection));
 
-  app.use("/users", UserAuthRouter);
-  app.use("/todo", TodoRouter);
-  app.use("/groups", GroupRouter);
+  app.use("/api/users", UserAuthRouter);
+  app.use("/api/todo", TodoRouter);
+  app.use("/api/groups", GroupRouter);
   app.use("*", async (req: express.Request, res: express.Response) => {
     res.sendFile(resolve(join(__dirname, '../../dist/index.html')));
   });

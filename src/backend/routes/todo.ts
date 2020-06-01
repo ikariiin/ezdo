@@ -80,9 +80,6 @@ router.get("/:groupId/all", async (req: express.Request, res: express.Response) 
     res.json(
       await todos.find({
         where: { author: username, group: groupId },
-        order: {
-          dueDate: "ASC"
-        }
       })
     );
   } catch(e) {

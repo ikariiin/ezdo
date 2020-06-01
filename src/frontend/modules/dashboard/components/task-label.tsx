@@ -39,6 +39,9 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
       return;
     }
 
+    this.props.enqueueSnackbar("Deleted label successfully.", {
+      variant: "info"
+    });
     console.log(responseJSON);
     this.props.refresh();
   }
@@ -73,7 +76,14 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
   }
 
   @action private async addLabel(): Promise<void> {
-    const newLabelStr = this.props.label === '' ? this.newLabel : `${this.props.label}//${this.newLabel}`;
+    if(this.newLabel.trim().length === 0) {
+      this.props.enqueueSnackbar("Label cannot be empty or entirely spaces.", {
+        variant: "error"
+      });
+      return;
+    }
+    // Shhhhh. :P
+    const newLabelStr = this.props.label === '' ? this.newLabel.replace(/\/\//g, "\\\\") : `${this.props.label}//${this.newLabel.replace(/\//g, "\\\\")}`;
     const response = await fetch(`${API_HOST}${API_TODO_LABEL}/${this.props.todoId}`, {
       method: "PUT",
       headers: {
@@ -83,7 +93,18 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
       body: JSON.stringify({ labelStr: newLabelStr })
     });
 
-    console.log(await response.json());
+    const responseJSON = await response.json();
+    if(responseJSON.failed) {
+      this.props.enqueueSnackbar(responseJSON.reason, {
+        variant: "error"
+      });
+      console.log(responseJSON);
+      return;
+    }
+
+    this.props.enqueueSnackbar("Label added successfully.", {
+      variant: "success"
+    });
     this.labelInput = false;
     this.newLabel = '';
     this.props.refresh();

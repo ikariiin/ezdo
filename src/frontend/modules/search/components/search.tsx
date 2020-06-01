@@ -163,11 +163,13 @@ class SearchComponent extends React.Component<WithSnackbarProps> {
           )}
         </section>
         {this.noResults}
-        <section className="filter-and-results">
+        {this.searchResult.length !== 0 && (
           <section className="results">
-            {this.renderResults}
+            <section>
+              {this.renderResults}
+            </section>
           </section>
-        </section>
+        )}
       </section>
     );
   }

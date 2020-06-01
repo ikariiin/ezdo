@@ -3,6 +3,7 @@ import { Typography, Paper, IconButton, Tooltip } from '@material-ui/core';
 import "../scss/group.scss";
 import AddIcon from '@material-ui/icons/AddTwoTone';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
+import MoreIcon from '@material-ui/icons/MoreHoriz';
 import { observer } from 'mobx-react';
 import { observable, computed } from 'mobx';
 import { NewTask } from './new-task';
@@ -11,6 +12,7 @@ import { API_HOST, API_TODOS, API_GROUPS } from '../../util/api-routes';
 import { Task } from './task';
 import { GroupDeleteConfirm } from './dialogs/group-delete-confirm';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
+import { GroupMenu } from './group-menu';
 
 export interface GroupProps extends WithSnackbarProps {
   title: string;
@@ -18,6 +20,12 @@ export interface GroupProps extends WithSnackbarProps {
   refreshGroup: (groupId: number) => any;
   groupUpdate: number;
   refresh: () => any;
+  className?: string;
+}
+
+export enum TaskSortMode {
+  RecentFirst,
+  ExpiringFirst
 }
 
 @observer
@@ -25,6 +33,8 @@ class GroupComponent extends React.Component<GroupProps> {
   @observable private createMode: boolean = false;
   @observable private tasks: Array<Todo> = [];
   @observable private confirmDelete: boolean = false;
+  @observable private groupMenuAnchor: HTMLButtonElement|null = null;
+  @observable private sortMode: TaskSortMode = TaskSortMode.RecentFirst;
 
   private async getTasks(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.id}/all`, {
@@ -71,14 +81,21 @@ class GroupComponent extends React.Component<GroupProps> {
     return null;
   }
 
+  private sortTasks(a: Todo, b: Todo): number {
+    return (new Date(a.dueDate)).getTime() - (new Date(b.dueDate)).getTime();
+  }
+
   @computed private get tasksRender(): React.ReactNode {
     if(this.tasks.length === 0) return null;
 
     return (
       <section className="tasks">
-        {this.tasks.map(task => (
+        {this.tasks.sort((a, b) => this.sortTasks(a, b)).map(task => (
           <Task {...task} refresh={() => this.getTasks()} refreshGroup={this.props.refreshGroup} key={task.id} />
         ))}
+        <section className="task-create-button" onClick={() => this.createMode = true}>
+          <AddIcon /> <Typography variant="button">Add task</Typography>
+        </section>
       </section>
     );
   }
@@ -101,12 +118,22 @@ class GroupComponent extends React.Component<GroupProps> {
       return;
     }
 
+    this.props.enqueueSnackbar("Deleted group successfully.", {
+      variant: "info"
+    });
     this.props.refresh();
   }
   
   public render() {
     return (
-      <Paper className="group" elevation={2}>
+      <Paper className={`group ${this.props.className}`} elevation={2}>
+        {Boolean(this.groupMenuAnchor) && (
+          <GroupMenu
+            onDelete={() => { this.confirmDelete = true; this.groupMenuAnchor = null; }}
+            onClose={() => this.groupMenuAnchor = null}
+            open={Boolean(this.groupMenuAnchor)}
+            anchorEl={this.groupMenuAnchor} />
+        )}
         <GroupDeleteConfirm
           close={() => this.confirmDelete = false}
           onClose={() => this.confirmDelete = false}
@@ -116,13 +143,13 @@ class GroupComponent extends React.Component<GroupProps> {
           <Typography variant="h5" className="title">{this.props.title}</Typography>
           <section className="group-action">
             <Tooltip title="Add a task">
-              <IconButton onClick={() => this.createMode = true}>
+              <IconButton onClick={() => this.createMode = true} color="primary">
                 <AddIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Delete group" onClick={() => this.confirmDelete = true}>
-              <IconButton>
-                <DeleteIcon />
+            <Tooltip title="More Actions">
+              <IconButton onClick={(ev) => this.groupMenuAnchor = ev.currentTarget}>
+                <MoreIcon />
               </IconButton>
             </Tooltip>
           </section>

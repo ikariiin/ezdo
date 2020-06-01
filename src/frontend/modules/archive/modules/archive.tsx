@@ -91,7 +91,7 @@ class ArchiveComponent extends React.Component<WithSnackbarProps> {
         {this.renderEmptyArchive}
         <main className="tasks">
           {this.tasks.map(task => (
-            <Task {...task} isArchive refresh={() => this.fetchArchives()} refreshGroup={() => this.fetchArchives()} />
+            <Task {...task} isArchive refresh={() => this.fetchArchives()} refreshGroup={() => this.fetchArchives()} key={task.id} />
           ))}
         </main>
       </section>

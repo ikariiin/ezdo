@@ -26,8 +26,8 @@
     .illustration {
       background: url("../../../../resources/illustration/undraw_dreamer_gxxi.svg");
       background-size: cover;
-      height: 270px;
-      width: 420px;
+      height: 300px;
+      width: 450px;
       margin-bottom: 1.5rem;
     }
   }
@@ -38,6 +38,23 @@
 
     & > * {
       margin: .5rem;
+    }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .archive {
+    .tasks {
+      grid-template-columns: 1fr;
+    }
+    .empty-archives {
+      .illustration {
+        width: 400px;
+        height: 230px;
+      }
+    }
+    .header {
+      margin-top: 1.25rem;
     }
   }
 }

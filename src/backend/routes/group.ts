@@ -91,7 +91,6 @@ router.post("/", async (req: express.Request, res: express.Response) => {
 });
 
 router.delete("/archive", async (req: express.Request, res: express.Response) => {
-  console.log('head');
   const jwtKey = req.headers.authorization;
   if(!jwtKey) {
     res.status(401);
@@ -108,7 +107,6 @@ router.delete("/archive", async (req: express.Request, res: express.Response) =>
     const users = req.db.getRepository(User);
     const todos = req.db.getRepository(Todo);
 
-    console.log(username, "loooooooooooo");
     const user = await users.findOne({ username: username });
     if(!user) {
       res.status(404);

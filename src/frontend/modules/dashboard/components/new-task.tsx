@@ -59,6 +59,9 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
       return;
     }
 
+    this.props.enqueueSnackbar("Created new task successfully.", {
+      variant: "success"
+    });
     this.props.refresh();
     this.resetState();
     this.props.cancelCreation();

@@ -14,3 +14,12 @@
     margin-left: .75rem;
   }
 }
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .date-filter-panel {
+    margin-top: .5rem;
+    .date-input {
+      width: 100px;
+    }
+  }
+}

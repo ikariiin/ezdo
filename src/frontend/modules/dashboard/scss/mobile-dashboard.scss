@@ -1,0 +1,21 @@
+.mobile-dashboard {
+  flex-grow: 1;
+  height: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .mobile-group-display {
+    flex-grow: 1;
+    margin-bottom: .5rem;
+    margin-top: .5rem;
+  }
+
+  .bottom-nav {
+    width: 100%;
+  }
+
+  .mobile-placeholder {
+    flex-grow: 1;
+  }
+}

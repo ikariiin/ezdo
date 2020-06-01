@@ -22,9 +22,23 @@
       .warn {
         color: rgb(241, 207, 56);
       }
+
+      .archive-notice {
+        color: rgb(31, 158, 231);
+        font-weight: 400;
+        margin-top: .2rem;
+      }
     }
   }
 
+  &.archived {
+    .date {
+      .archive-notice {
+        opacity: 1;
+        font-size: .73rem;
+      }
+    }
+  }
   &.expired {
     .task-header {
       align-items: center;
