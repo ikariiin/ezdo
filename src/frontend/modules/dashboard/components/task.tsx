@@ -98,6 +98,10 @@ class TaskComponent extends React.Component<TaskProps> {
       });
       return;
     }
+
+    this.props.enqueueSnackbar("Task deleted successfully.", {
+      variant: "info"
+    });
     this.deleteDialog = false;
     this.anchorEl = null;
     this.props.refresh();
@@ -145,6 +149,9 @@ class TaskComponent extends React.Component<TaskProps> {
       return;
     }
 
+    this.props.enqueueSnackbar("Task archived.", {
+      variant: "info"
+    });
     this.props.refresh();
   }
 

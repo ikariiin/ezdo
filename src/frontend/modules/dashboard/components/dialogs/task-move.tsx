@@ -62,6 +62,9 @@ class TaskMoveComponent extends React.Component<TaskMoveProps> {
       return;
     }
 
+    this.props.enqueueSnackbar("Task moved.", {
+      variant: "info"
+    });
     this.props.close();
     console.log(responseJSON);
     this.props.refreshGroup(groupId);
