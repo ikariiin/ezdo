@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import "../scss/task.scss";
 import MoreIcon from '@material-ui/icons/MoreVertOutlined';
 import ArchiveIcon from '@material-ui/icons/ArchiveOutlined';
-import UnArchiveIcon from '@material-ui/icons/UnArchiveOutlined';
+import UnArchiveIcon from '@material-ui/icons/UnarchiveOutlined';
 import { observer } from 'mobx-react';
 import { observable, action } from 'mobx';
 import { TaskLabel } from './task-label';
