@@ -29,6 +29,7 @@ rl.question("Port to listen to in the HTTP server(8080): ", (port) => {
   rl.question(`Path to log file(${logFile}): `, (file) => {
     if(file.trim().length === 0) {
       envConfig.LOG_FILE = logFile;
+      fs.mkdirSync(path.join(__dirname, "logs"));
     } else {
       envConfig.LOG_FILE = file;
     }

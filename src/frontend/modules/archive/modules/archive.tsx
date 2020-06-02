@@ -9,11 +9,13 @@ import { Task } from '../../dashboard/components/task';
 import { Redirect } from 'react-router-dom';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { RoutesProps } from '../../root/components/routes';
+import { ArchiveClearConfirm } from './archive-clear-confirm';
 
 @observer
 class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> {
   @observable private tasks: Array<Todo> = [];
   @observable private notAuthorized: boolean = false;
+  @observable private clearConfirm: boolean = false;
 
   private async fetchArchives(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_GROUPS}/-1`, {
@@ -54,6 +56,7 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
     }
 
     this.fetchArchives();
+    this.clearConfirm = false;
   }
 
   public componentDidMount() {
@@ -80,10 +83,15 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
   public render() {
     return (
       <section className="archive">
+        <ArchiveClearConfirm
+          open={this.clearConfirm}
+          close={() => this.clearConfirm = false}
+          onClose={() => this.clearConfirm = false}
+          confirm={() => this.clearArchives()} />
         {this.notAuthorized && <Redirect to="/login" />}
         <section className="header">
           <div className="space" />
-          <Button disabled={this.tasks.length === 0} variant="text" color="secondary" size="large" onClick={() => this.clearArchives()}>
+          <Button disabled={this.tasks.length === 0} variant="contained" color="primary" size="large" onClick={() => this.clearConfirm = true}>
             Clear Archive
           </Button>
         </section>

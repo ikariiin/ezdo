@@ -47,12 +47,13 @@ class DashboardComponent extends React.Component<DashboardProps> {
     this.groups.map(group => group.id).forEach(groupId => this.groupUpdates[groupId] = 0);
   }
 
-  private renderBlankGroups(): Array<React.ReactNode> {
+  private renderBlankGroups(): React.ReactNode {
     const numberGroups = 4 - this.groups.length;
     let key = -5;
-    return Array(numberGroups).fill(
-      <GroupPlaceholder refresh={() => this.getGroups()} />
-    ).map(placeholderComponent => React.cloneElement(placeholderComponent, { key: ++key }));
+    if(numberGroups > 0) {
+      return <GroupPlaceholder refresh={() => { this.getGroups(); this.props.refreshDrawerGroups(); }} />;
+    }
+    return null;
   }
 
   public componentDidMount(): void {

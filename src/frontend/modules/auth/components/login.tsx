@@ -17,6 +17,18 @@ class LoginComponent extends React.Component<LoginProps> {
   @observable private password: string = "";
 
   private async apiLogIn(): Promise<void> {
+    if(this.username.trim().length === 0) {
+      this.props.enqueueSnackbar("Username cannot be blank or consist of just spaces!", {
+        variant: "warning"
+      });
+      return;
+    }
+    if(this.password.trim().length === 0) {
+      this.props.enqueueSnackbar("Password cannot be blank or consist of just spaces!", {
+        variant: "warning"
+      });
+      return;
+    }
     const response = await fetch(`${API_HOST}${API_LOGIN}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,7 +64,7 @@ class LoginComponent extends React.Component<LoginProps> {
           <Typography variant="subtitle2">
             If you don't have one yet, <Link to="/register">create one now</Link>!
           </Typography>
-          <section className="form">
+          <form className="form" onSubmit={(ev) => { this.apiLogIn(); ev.preventDefault(); }}>
             <TextField margin="normal"
               variant="filled"
               label="username"
@@ -72,10 +84,10 @@ class LoginComponent extends React.Component<LoginProps> {
               fullWidth />
             <br />
             <br />
-            <Button variant="contained" color="secondary" size="medium" onClick={() => this.apiLogIn()}>
+            <Button size="large" variant="contained" type="submit" color="secondary">
               Login
             </Button>
-          </section>
+          </form>
         </section>
       </section>
     )

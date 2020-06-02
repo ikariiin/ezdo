@@ -6,6 +6,7 @@ import { observable } from 'mobx';
 import { API_HOST, API_REGISTER } from '../../util/api-routes';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { RoutesProps } from '../../root/components/routes';
+import { Link } from 'react-router-dom';
 
 @observer
 class RegisterComponent extends React.Component<WithSnackbarProps & RoutesProps> {
@@ -18,6 +19,13 @@ class RegisterComponent extends React.Component<WithSnackbarProps & RoutesProps>
       this.props.enqueueSnackbar("Username cannot be blank or consist of just spaces!", {
         variant: "warning"
       });
+      return;
+    }
+    if(this.password.trim().length === 0) {
+      this.props.enqueueSnackbar("Password cannot be blank or consist of just spaces!", {
+        variant: "warning"
+      });
+      return;
     }
     if(this.password !== this.passwordRe) {
       this.props.enqueueSnackbar("Passwords do not match", {
@@ -61,9 +69,9 @@ class RegisterComponent extends React.Component<WithSnackbarProps & RoutesProps>
             Register
           </Typography>
           <Typography variant="subtitle2">
-            for an account
+            for an account. Alternatively, if you already have one, <Link to="/login">login</Link>!
           </Typography>
-          <section className="form">
+          <form className="form" onSubmit={(ev) => { this.apiRegister(); ev.preventDefault(); }}>
             <TextField
               margin="normal"
               variant="filled"
@@ -94,10 +102,10 @@ class RegisterComponent extends React.Component<WithSnackbarProps & RoutesProps>
               fullWidth />
             <br />
             <br />
-            <Button variant="contained" color="secondary" size="medium" onClick={() => this.apiRegister()}>
+            <Button size="large" variant="contained" type="submit" color="secondary">
               Register
             </Button>
-          </section>
+          </form>
         </section>
       </section>
     );

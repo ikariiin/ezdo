@@ -29,6 +29,7 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
   @observable private minDateFilter?: Date|null = null;
   @observable private maxDateFilter?: Date|null = null;
   @observable private notAuthorized: boolean = false;
+  @observable private debounceTimer: NodeJS.Timeout = setTimeout(() => {}, 0);
 
   @computed private get noResults(): React.ReactNode {
     if(
@@ -42,7 +43,7 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
           {this.search.trim().length === 0 ? (
             "Results will appear here when you start searching"
           ) : (
-            "Looks like there's no results for the search term"
+            "Looks like there's no results for the search term '" + this.search + "'"
           )}
         </Typography>
       </section>
@@ -78,33 +79,36 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
 
   @action private async startSearching(searchTerm: string): Promise<void> {
     this.search = searchTerm;
-    if(searchTerm.trim().length === 0) {
-      this.searchResult = [];
-      return;
-    };
-
-    if(this.activeSearchCategory === SearchCategory.Group) {
-      this.searchGroups();
-      return;
-    }
-
-    const response = await fetch(`${API_HOST}${API_TODOS}/search/${this.activeSearchCategory}/${encodeURIComponent(searchTerm)}`, {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("jwtKey") || ''
+    clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(async () => {
+      if(searchTerm.trim().length === 0) {
+        this.searchResult = [];
+        return;
+      };
+  
+      if(this.activeSearchCategory === SearchCategory.Group) {
+        this.searchGroups();
+        return;
       }
-    });
-
-    const responseJSON = await response.json();
-    if(responseJSON.failed) {
-      console.error(responseJSON);
-      this.props.enqueueSnackbar(responseJSON.reason, {
-        variant: "error"
+  
+      const response = await fetch(`${API_HOST}${API_TODOS}/search/${this.activeSearchCategory}/${encodeURIComponent(searchTerm)}`, {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem("jwtKey") || ''
+        }
       });
-      return;
-    }
-
-    this.searchResult = responseJSON.searchResult;
+  
+      const responseJSON = await response.json();
+      if(responseJSON.failed) {
+        console.error(responseJSON);
+        this.props.enqueueSnackbar(responseJSON.reason, {
+          variant: "error"
+        });
+        return;
+      }
+  
+      this.searchResult = responseJSON.searchResult;
+    }, 500);
   }
 
   @computed private get renderResults(): React.ReactNode {

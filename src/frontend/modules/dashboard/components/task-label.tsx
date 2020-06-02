@@ -112,22 +112,26 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
 
   @computed private get labelEdit(): React.ReactNode {
     if(this.labelInput) {
-      return <TextField fullWidth size="small" variant="outlined" margin="normal" autoFocus label="Label" InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <Tooltip title="Add label">
-              <IconButton size="small" onClick={() => this.addLabel()}>
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Close">
-              <IconButton size="small" onClick={() => {this.labelInput = false; this.newLabel = '';}}>
-                <CancelIcon />
-              </IconButton>
-            </Tooltip>
-          </InputAdornment>
-        )
-      }} onChange={ev => this.newLabel = ev.target.value} value={this.newLabel} />;
+      return (
+        <form onSubmit={(ev) => { ev.preventDefault(); this.addLabel(); }} style={{ width: '100%' }}>
+          <TextField fullWidth size="small" variant="outlined" margin="normal" autoFocus label="Label" InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Tooltip title="Add label">
+                  <IconButton size="small" onClick={() => this.addLabel()}>
+                    <AddIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Close">
+                  <IconButton size="small" onClick={() => {this.labelInput = false; this.newLabel = '';}}>
+                    <CancelIcon />
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            )
+          }} onChange={ev => this.newLabel = ev.target.value} value={this.newLabel} />
+        </form>
+      );
     }
 
     return null;

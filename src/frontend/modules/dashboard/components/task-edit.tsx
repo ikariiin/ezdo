@@ -106,7 +106,7 @@ class TaskEditComponent extends React.Component<TaskEditProps> {
           </Button>
           <Button variant="contained" size="small" color="secondary" onClick={() => this.editTask()}>
             <EditIcon />
-            Edit task
+            Save task
           </Button>
         </section>
       </Paper>

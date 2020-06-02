@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dialog, DialogProps, List, ListItem, ListItemText, DialogTitle, ListItemAvatar, Avatar, Typography } from '@material-ui/core';
+import { Dialog, DialogProps, List, ListItem, ListItemText, DialogTitle, ListItemAvatar, Avatar, Typography, DialogActions, Button, ListItemIcon } from '@material-ui/core';
 import { API_HOST, API_GROUPS, API_TODO_MOVE } from '../../../util/api-routes';
 import { Groups } from '../../../../../backend/entities/groups';
 import { observable } from 'mobx';
@@ -76,11 +76,19 @@ class TaskMoveComponent extends React.Component<TaskMoveProps> {
       <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>Move to another group</DialogTitle>
         <List>
+          {this.groups.filter(group => group.id !== this.props.currentGroupId).length === 0 && (
+            <ListItem>
+              <ListItemIcon>
+                <CloseIcon />
+              </ListItemIcon>
+              <ListItemText primary="No other groups present" />
+            </ListItem>
+          )}
           {this.groups.filter(group => group.id !== this.props.currentGroupId).map(group => (
             <ListItem button key={group.id} onClick={() => this.moveToGroup(group.id)}>
               <ListItemAvatar>
                 <Avatar style={{ background: '#01A8D5' }}>
-                  <Typography variant="h6">
+                  <Typography variant="subtitle1">
                     {group.name[0].toUpperCase()}
                   </Typography>
                 </Avatar>
@@ -88,15 +96,12 @@ class TaskMoveComponent extends React.Component<TaskMoveProps> {
               <ListItemText primary={group.name} />
             </ListItem>
           ))}
-          <ListItem button onClick={this.props.close}>
-            <ListItemAvatar>
-              <Avatar>
-                <CloseIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Cancel" />
-          </ListItem>
         </List>
+        <DialogActions>
+          <Button color="primary" variant="text" onClick={this.props.close}>
+            <CloseIcon /> Cancel
+          </Button>
+        </DialogActions>
       </Dialog>
     )
   }

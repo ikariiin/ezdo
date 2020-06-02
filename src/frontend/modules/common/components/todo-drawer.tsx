@@ -34,9 +34,9 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
   
     const responseJSON = await response.json();
     if(responseJSON.failed) {
-      this.props.enqueueSnackbar("Failed to fetch groups, for the drawer. " + responseJSON.reason, {
-        variant: "error"
-      });
+      // this.props.enqueueSnackbar("Failed to fetch groups, for the drawer. " + responseJSON.reason, {
+      //   variant: "error"
+      // });
       console.error(responseJSON);
       return;
     }
@@ -52,9 +52,9 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
     });
     const responseJSON = await response.json();
     if(responseJSON.failed) {
-      this.props.enqueueSnackbar("Failed to fetch username. " + responseJSON.reason, {
-        variant: "error"
-      });
+      // this.props.enqueueSnackbar("Failed to fetch username. " + responseJSON.reason, {
+      //   variant: "error"
+      // });
       console.error(responseJSON);
       return;
     }
@@ -64,7 +64,9 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
   public componentDidMount() {
     this.getGroupEntries();
     this.getUsername();
-    this.props.setRefreshDrawerGroups(() => this.getGroupEntries());
+    this.props.setRefreshDrawerGroups(() => {
+      this.getGroupEntries();
+    });
   }
 
   public render() {
@@ -110,6 +112,11 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
           <section className="nav-header sub">
             Groups
           </section>
+          {this.groups.length === 0 && (
+            <ListItem>
+              <ListItemText primary="No groups created yet" />
+            </ListItem>
+          )}
           {this.groups.map(group => (
             <ListItem button component={Link} to={`/groups/${group.id}/${group.name}`} onClick={this.props.closeDrawer}>
               <ListItemIcon>

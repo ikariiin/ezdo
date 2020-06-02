@@ -28,13 +28,13 @@ export const SearchInput: React.FunctionComponent<SearchInputProps> = (props): J
         }}
         anchorEl={anchorEl} open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}>
-        <MenuItem onClick={() => props.onCategoryChange(SearchCategory.Task) && setAnchorEl(null)}>
+        <MenuItem selected={props.searchCategory === SearchCategory.Task} onClick={() => props.onCategoryChange(SearchCategory.Task) && setAnchorEl(null)}>
           Tasks
         </MenuItem>
-        <MenuItem onClick={() => props.onCategoryChange(SearchCategory.Label) && setAnchorEl(null)}>
+        <MenuItem selected={props.searchCategory === SearchCategory.Label} onClick={() => props.onCategoryChange(SearchCategory.Label) && setAnchorEl(null)}>
           Labels
         </MenuItem>
-        <MenuItem onClick={() => props.onCategoryChange(SearchCategory.Group) && setAnchorEl(null)}>
+        <MenuItem selected={props.searchCategory === SearchCategory.Group} onClick={() => props.onCategoryChange(SearchCategory.Group) && setAnchorEl(null)}>
           Groups
         </MenuItem>
       </Menu>

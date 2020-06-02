@@ -57,7 +57,7 @@ export const About: React.FunctionComponent<RoutesProps> = ({ changeTitle }): JS
         <Paper className="about-paper" elevation={8}>
           <Typography variant="body1">
             This project is built for the Hacker Earth, StackHack Challenge, and with ❤️ by Gourab Nag
-            <span style={{ display: "inline-block" }}>&lt;gourabnag12 at gmail dot com&gt;</span>.
+            <span style={{ display: "inline-block" }}><a href="https://github.com/SaitamaSama">@SaitamaSama</a></span>.
           </Typography>
           <Typography variant="body1">
             This project uses a mix of various technologies, but namely,

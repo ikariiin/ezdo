@@ -15,7 +15,7 @@ import { observable, action } from 'mobx';
 @observer
 export class AppBase extends React.Component<{}> {
   @observable navbarTitle: string = "EZDo";
-  @observable refreshDrawerGroups: () => any = () => {};
+  refreshDrawerGroups: () => any = () => {};
 
   @action private changeNavbarTitle(title: string): void {
     this.navbarTitle = title;
