@@ -1,0 +1,22 @@
+.group-page {
+  margin-top: .5rem;
+  flex-grow: 1;
+
+  .no-results {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+
+    .illustration {
+      background: url("../../../../resources/illustration/undraw_dreamer_gxxi.svg");
+      background-size: cover;
+      height: 300px;
+      width: 450px;
+      margin-bottom: 1.5rem;
+    }
+  }
+}

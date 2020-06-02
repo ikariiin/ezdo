@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/SaitamaSama/todo-hackerearth#readme",
   "devDependencies": {
+    "webpack-pwa-manifest": "^4.2.0"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

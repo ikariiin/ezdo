@@ -2,5 +2,10 @@
   width: 270px;
   .nav-header {
     margin: 8px 16px;
+
+    &.sub {
+      font-size: .8rem;
+      opacity: .8;
+    }
   }
 }

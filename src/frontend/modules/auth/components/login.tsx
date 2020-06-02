@@ -6,9 +6,13 @@ import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import { API_HOST, API_LOGIN } from '../../util/api-routes';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
+import { RoutesProps } from '../../root/components/routes';
+
+export interface LoginProps extends WithSnackbarProps, RoutesProps {
+}
 
 @observer
-class LoginComponent extends React.Component<WithSnackbarProps> {
+class LoginComponent extends React.Component<LoginProps> {
   @observable private username: string = "";
   @observable private password: string = "";
 
@@ -34,6 +38,10 @@ class LoginComponent extends React.Component<WithSnackbarProps> {
     localStorage.setItem('jwtKey', tokenPayload.token);
     // same reason as register.tsx, hard-reload
     window.location.pathname = "/";
+  }
+
+  public componentDidMount(): void {
+    this.props.changeTitle("Login to EZDo");
   }
 
   public render() {

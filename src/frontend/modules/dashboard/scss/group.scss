@@ -37,6 +37,11 @@
     .group-action {
       display: flex;
       justify-content: space-between;
+
+      .add-task-button-container {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 

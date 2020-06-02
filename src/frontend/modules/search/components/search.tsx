@@ -13,6 +13,7 @@ import { SearchFilter } from './search-filters';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { Redirect } from 'react-router-dom';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
+import { RoutesProps } from '../../root/components/routes';
 
 export enum SearchCategory {
   Task = "Task",
@@ -21,7 +22,7 @@ export enum SearchCategory {
 }
 
 @observer
-class SearchComponent extends React.Component<WithSnackbarProps> {
+class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
   @observable private activeSearchCategory: SearchCategory = SearchCategory.Task;
   @observable private search: string = "";
   @observable private searchResult: Array<Todo|Groups> = [];
@@ -52,6 +53,7 @@ class SearchComponent extends React.Component<WithSnackbarProps> {
     if(!localStorage.getItem('jwtKey')) {
       this.notAuthorized = true;
     }
+    this.props.changeTitle("Search");
   }
 
   @action private async searchGroups(): Promise<void> {

@@ -8,8 +8,13 @@ import { ToDoDrawer } from './todo-drawer';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link } from 'react-router-dom';
 
+export interface NavBarProps {
+  title: string;
+  setRefreshDrawerGroups: (refresh: () => any) => any;
+}
+
 @observer 
-export class NavBar extends React.Component<{}> {
+export class NavBar extends React.Component<NavBarProps> {
   @observable drawerOpen: boolean = false;
 
   private closeDrawer(): void {
@@ -21,7 +26,7 @@ export class NavBar extends React.Component<{}> {
 
     return (
       <>
-        <ToDoDrawer open={this.drawerOpen} closeDrawer={() => this.closeDrawer()} />
+        <ToDoDrawer open={this.drawerOpen} closeDrawer={() => this.closeDrawer()} setRefreshDrawerGroups={this.props.setRefreshDrawerGroups} />
         <AppBar color="default" className="navbar" position="relative">
           <Toolbar>
             {isLoggedIn && (
@@ -30,7 +35,7 @@ export class NavBar extends React.Component<{}> {
               </IconButton>
             )}
             <Typography variant="h6" className="app-name">
-              EZDo
+              {this.props.title}
             </Typography>
             {isLoggedIn && (
               <IconButton component={Link} to="/search">

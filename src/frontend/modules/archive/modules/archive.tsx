@@ -8,9 +8,10 @@ import { Todo } from '../../../../backend/entities/todo';
 import { Task } from '../../dashboard/components/task';
 import { Redirect } from 'react-router-dom';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
+import { RoutesProps } from '../../root/components/routes';
 
 @observer
-class ArchiveComponent extends React.Component<WithSnackbarProps> {
+class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> {
   @observable private tasks: Array<Todo> = [];
   @observable private notAuthorized: boolean = false;
 
@@ -60,6 +61,7 @@ class ArchiveComponent extends React.Component<WithSnackbarProps> {
     if(!localStorage.getItem("jwtKey")) {
       this.notAuthorized = true;
     }
+    this.props.changeTitle("Archive");
   }
 
   @computed private get renderEmptyArchive(): React.ReactNode {
@@ -80,9 +82,6 @@ class ArchiveComponent extends React.Component<WithSnackbarProps> {
       <section className="archive">
         {this.notAuthorized && <Redirect to="/login" />}
         <section className="header">
-          <Typography variant="h4">
-            Archive
-          </Typography>
           <div className="space" />
           <Button disabled={this.tasks.length === 0} variant="text" color="secondary" size="large" onClick={() => this.clearArchives()}>
             Clear Archive

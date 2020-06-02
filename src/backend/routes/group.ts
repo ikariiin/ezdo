@@ -1,10 +1,4 @@
 import * as express from 'express';
-import { getUsernameFromJWT } from '../util';
-import { User } from '../entities/user';
-import { Groups } from '../entities/groups';
-import { ErrorEnums } from '../error-enums';
-import { Todo } from '../entities/todo';
-import { Like } from 'typeorm';
 import { getGroups } from './group/get-groups';
 import { deleteArchive } from './group/delete-archive';
 import { createGroup } from './group/create-group';

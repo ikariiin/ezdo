@@ -1,0 +1,22 @@
+.tasks-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin: 0 .5rem;
+
+  & > * {
+    margin: 0 .5rem;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .tasks-group {
+    grid-template-columns: 1fr;
+
+    .no-results {
+      .illustration {
+        width: 400px;
+        height: 230px;
+      }
+    }
+  }
+}

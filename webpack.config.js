@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
   entry: [path.join(path.resolve(__dirname, 'src/frontend/'), 'mounter.tsx')],
@@ -10,6 +11,20 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(path.resolve(__dirname, 'src/frontend/'), 'index.html')
+    }),
+    new WebpackPwaManifest({
+      name: "EZDo - Manage your tasks",
+      short_name: "EZDo",
+      "theme-color": "#EB5757",
+      display: "standalone",
+      background_color: "#151515",
+      description: "Task management app",
+      icons: [
+        {
+          src: path.resolve(path.join(__dirname + '/src/resources/icons/ezdo_icon_192.png')),
+          size: '192x192'
+        }
+      ]
     })
   ],
   module: {

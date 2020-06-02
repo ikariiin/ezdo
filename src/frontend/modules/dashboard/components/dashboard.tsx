@@ -10,13 +10,17 @@ import { Redirect } from 'react-router-dom';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { isMobile } from '../../util/is-mobile';
 import { MobileDashboard } from './mobile-dashboard';
+import { RoutesProps } from '../../root/components/routes';
 
 export interface GroupUpdate {
   [key: number]: number
 }
 
+export interface DashboardProps extends WithSnackbarProps, RoutesProps {
+}
+
 @observer
-class DashboardComponent extends React.Component<WithSnackbarProps> {
+class DashboardComponent extends React.Component<DashboardProps> {
   @observable groups: Array<Groups> = [];
   @observable groupUpdates: GroupUpdate = {};
   @observable notAuthrorized: boolean = false;
@@ -56,6 +60,8 @@ class DashboardComponent extends React.Component<WithSnackbarProps> {
     if(!localStorage.getItem('jwtKey')) {
       this.notAuthrorized = true;
     }
+
+    this.props.changeTitle("Dashboard");
   }
 
   @action private refreshGroup(id: number): void {
@@ -71,8 +77,8 @@ class DashboardComponent extends React.Component<WithSnackbarProps> {
         {this.notAuthrorized && <Redirect to="/login" />}
         {this.groups.map(group => (
           <Group
-            refresh={() => this.getGroups()}
-            refreshGroup={(id: number) => this.refreshGroup(id)}
+            refresh={() => { this.getGroups(); this.props.refreshDrawerGroups(); }}
+            refreshGroup={(id: number) => { this.refreshGroup(id); this.props.refreshDrawerGroups(); }}
             groupUpdate={this.groupUpdates[group.id]}
             title={group.name} id={group.id} key={group.id} />
         ))}

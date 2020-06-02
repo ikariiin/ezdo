@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Typography, Paper, IconButton, Tooltip } from '@material-ui/core';
+import { Typography, Paper, IconButton, Tooltip, Button } from '@material-ui/core';
 import "../scss/group.scss";
 import AddIcon from '@material-ui/icons/AddTwoTone';
-import DeleteIcon from '@material-ui/icons/DeleteForever';
-import MoreIcon from '@material-ui/icons/MoreHoriz';
+import MoreIcon from '@material-ui/icons/MoreVert';
 import { observer } from 'mobx-react';
 import { observable, computed } from 'mobx';
 import { NewTask } from './new-task';
@@ -93,9 +92,9 @@ class GroupComponent extends React.Component<GroupProps> {
         {this.tasks.sort((a, b) => this.sortTasks(a, b)).map(task => (
           <Task {...task} refresh={() => this.getTasks()} refreshGroup={this.props.refreshGroup} key={task.id} />
         ))}
-        <section className="task-create-button" onClick={() => this.createMode = true}>
+        {/* <section className="task-create-button" onClick={() => this.createMode = true}>
           <AddIcon /> <Typography variant="button">Add task</Typography>
-        </section>
+        </section> */}
       </section>
     );
   }
@@ -142,11 +141,11 @@ class GroupComponent extends React.Component<GroupProps> {
         <header className="group-header">
           <Typography variant="h5" className="title">{this.props.title}</Typography>
           <section className="group-action">
-            <Tooltip title="Add a task">
-              <IconButton onClick={() => this.createMode = true} color="primary">
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
+            <div className="add-task-button-container">
+              <Button variant="text" color="secondary"  onClick={() => this.createMode = true} size="small">
+                <AddIcon /> Add Task
+              </Button>
+            </div>
             <Tooltip title="More Actions">
               <IconButton onClick={(ev) => this.groupMenuAnchor = ev.currentTarget}>
                 <MoreIcon />

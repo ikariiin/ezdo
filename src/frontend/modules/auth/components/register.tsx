@@ -5,9 +5,10 @@ import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import { API_HOST, API_REGISTER } from '../../util/api-routes';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
+import { RoutesProps } from '../../root/components/routes';
 
 @observer
-class RegisterComponent extends React.Component<WithSnackbarProps> {
+class RegisterComponent extends React.Component<WithSnackbarProps & RoutesProps> {
   @observable private username: string = "";
   @observable private password: string = "";
   @observable private passwordRe: string = "";
@@ -46,6 +47,10 @@ class RegisterComponent extends React.Component<WithSnackbarProps> {
     localStorage.setItem('jwtKey', tokenPayload.token);
     // Hard reload, otherwise the localStorage dependent stuff in Navbar.tsx would not update
     window.location.pathname = "/";
+  }
+
+  public componentDidMount() {
+    this.props.changeTitle("Register for an account - EZDo");
   }
 
   public render() {
