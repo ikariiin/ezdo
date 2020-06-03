@@ -1,0 +1,14 @@
+.archive-intro {
+  .col-layout {
+    display: flex;
+    height: 274.5px;
+    
+    .archive-screenshot {
+      background: url("../../../../resources/screenshots/archives.png");
+      width: 684px;
+      height: 181px;
+      border-radius: 5px;
+      background-size: cover;
+    }
+  }
+}

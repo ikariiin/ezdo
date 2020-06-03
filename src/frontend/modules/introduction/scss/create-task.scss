@@ -1,0 +1,18 @@
+.create-task-intro {
+  .col-layout {
+    display: flex;
+    height: 274.5px;
+
+    .task-screenshot {
+      background: url("../../../../resources/screenshots/task-creation.png");
+      width: 684px;
+      height: 181px;
+      border-radius: 5px;
+      background-size: cover;
+      background-position-x: -2px;
+    }
+    .text {
+      margin-right: .5rem;
+    }
+  }
+}

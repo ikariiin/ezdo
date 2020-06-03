@@ -5,13 +5,14 @@ export function getTheme(mode: "light"|"dark" = "light") {
     palette: {
       type: mode,
       primary: {
-        main: "#EB5757"
+        main: "#F50057"
       },
       secondary: {
         main: "#01A8D5"
       },
       background: {
-        default: mode === "light" ? "#DFDFDF" : "#202020"
+        default: mode === "light" ? "#DFDFDF" : "#151515",
+        paper: mode === "light" ? "#f9faff" : "#3D4048"
       }
     },
     typography: {

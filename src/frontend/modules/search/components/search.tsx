@@ -4,7 +4,7 @@ import "../scss/search.scss";
 import { observable, computed, action } from 'mobx';
 import { observer } from 'mobx-react';
 import { Todo } from '../../../../backend/entities/todo';
-import { Typography } from '@material-ui/core';
+import { Typography, LinearProgress } from '@material-ui/core';
 import { API_HOST, API_TODOS, API_GROUPS } from '../../util/api-routes';
 import { Task } from '../../dashboard/components/task';
 import { Groups } from '../../../../backend/entities/groups';
@@ -14,6 +14,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { Redirect } from 'react-router-dom';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
 import { RoutesProps } from '../../root/components/routes';
+import { Skeleton } from '@material-ui/lab';
 
 export enum SearchCategory {
   Task = "Task",
@@ -30,10 +31,12 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
   @observable private maxDateFilter?: Date|null = null;
   @observable private notAuthorized: boolean = false;
   @observable private debounceTimer: NodeJS.Timeout = setTimeout(() => {}, 0);
+  @observable private loading: boolean = false;
 
   @computed private get noResults(): React.ReactNode {
     if(
       this.searchResult.length !== 0
+      || this.loading
     ) return null;
 
     return (
@@ -79,10 +82,12 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
 
   @action private async startSearching(searchTerm: string): Promise<void> {
     this.search = searchTerm;
+    this.loading = true;
     clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(async () => {
       if(searchTerm.trim().length === 0) {
         this.searchResult = [];
+        this.loading = false;
         return;
       };
   
@@ -99,6 +104,7 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
       });
   
       const responseJSON = await response.json();
+      this.loading = false;
       if(responseJSON.failed) {
         console.error(responseJSON);
         this.props.enqueueSnackbar(responseJSON.reason, {
@@ -111,7 +117,22 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
     }, 500);
   }
 
+  @computed private get loader(): React.ReactNode {
+    if(this.loading) {
+      return (
+        <section className="loader-container">
+          <Skeleton className="search-result-skeleton" variant="rect" animation="wave" />
+          <Skeleton className="search-result-skeleton" variant="rect" animation="wave" />
+          <Skeleton className="search-result-skeleton" variant="rect" animation="wave" />
+        </section>
+      );
+    }
+
+    return null;
+  }
+
   @computed private get renderResults(): React.ReactNode {
+    if(this.loading) return null;
     if(this.activeSearchCategory !== SearchCategory.Group) {
       const highlight: any = {};
       if(this.activeSearchCategory === SearchCategory.Task) { highlight.taskHighlight = this.search }
@@ -130,11 +151,13 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
         return true;
       //@ts-ignore
       }).map((task: Todo) => (
-        <Task
-          {...task}
-          {...highlight}
-          refresh={() => this.startSearching(this.search)}
-          refreshGroup={() => this.startSearching(this.search)} />
+        <section>
+          <Task
+            {...task}
+            {...highlight}
+            refresh={() => this.startSearching(this.search)}
+            refreshGroup={() => this.startSearching(this.search)} />
+        </section>
       ));
     }
 
@@ -169,11 +192,10 @@ class SearchComponent extends React.Component<WithSnackbarProps & RoutesProps> {
           )}
         </section>
         {this.noResults}
+        {this.loader}
         {this.searchResult.length !== 0 && (
           <section className="results">
-            <section>
-              {this.renderResults}
-            </section>
+            {this.renderResults}
           </section>
         )}
       </section>

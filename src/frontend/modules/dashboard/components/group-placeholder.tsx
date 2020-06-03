@@ -78,7 +78,7 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
     );
 
     return (
-      <section className="edit-form">
+      <form className="edit-form" onSubmit={(ev) => { this.createGroup(); ev.preventDefault(); }}>
         <TextField
           placeholder="F.ex. In Progress, or Completed"
           fullWidth
@@ -93,10 +93,10 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
         <Button variant="text" onClick={(ev: React.MouseEvent<HTMLButtonElement>) => this.closeEditMode(ev)}>
           Cancel
         </Button>
-        <Button variant="text" color="secondary" onClick={() => this.createGroup()}>
+        <Button variant="text" color="secondary" type="submit">
           Create group <ArrowRightIcon />
         </Button>
-      </section>
+      </form>
     );
   }
 

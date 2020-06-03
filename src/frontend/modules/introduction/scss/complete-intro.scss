@@ -1,0 +1,13 @@
+.complete-intro {
+  .col-layout {
+    display: flex;
+
+    .pet-illustration {
+      background: url("../../../../resources/illustration/undraw_refreshing_beverage_td3r.svg");
+      width: calc(30.5 * 16px);
+      height: calc(30.5 * 9px);
+      border-radius: 5px;
+      background-size: contain;
+    }
+  }
+}

@@ -1,6 +1,16 @@
+.app-theme-light {
+  .task {
+    background: rgba(241, 241, 241, 0.8) !important;
+  }
+}
+.app-theme-dark {
+  .task {
+    background: rgba(0,0,0,.4) !important;
+  }
+}
+
 .task {
   padding: 1rem;
-  background: rgba(0,0,0,.4) !important;
   margin: .3rem 0;
 
   .task-text {
@@ -12,11 +22,8 @@
     align-items: flex-start;
 
     .date {
-      font-size: .7rem;
-      opacity: .8;
       margin-bottom: .4rem;
       display: block;
-      line-height: 1.8;
       flex-grow: 1;
 
       .warn {
@@ -34,8 +41,7 @@
   &.archived {
     .date {
       .archive-notice {
-        opacity: 1;
-        font-size: .73rem;
+        font-size: .8rem;
       }
     }
   }
@@ -45,7 +51,7 @@
     }
 
     .date {
-      color: rgb(250, 67, 67);
+      color: #F50057;
       opacity: 1;
       line-height: normal;
       font-size: .73rem;

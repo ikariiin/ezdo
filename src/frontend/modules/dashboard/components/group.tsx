@@ -12,6 +12,7 @@ import { Task } from './task';
 import { GroupDeleteConfirm } from './dialogs/group-delete-confirm';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { GroupMenu } from './group-menu';
+import { Skeleton } from '@material-ui/lab';
 
 export interface GroupProps extends WithSnackbarProps {
   title: string;
@@ -34,8 +35,10 @@ class GroupComponent extends React.Component<GroupProps> {
   @observable private confirmDelete: boolean = false;
   @observable private groupMenuAnchor: HTMLButtonElement|null = null;
   @observable private sortMode: TaskSortMode = TaskSortMode.RecentFirst;
+  @observable private loadingTasks: boolean = false;
 
   private async getTasks(): Promise<void> {
+    this.loadingTasks = true;
     const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.id}/all`, {
       headers: {
         Authorization: localStorage.getItem("jwtKey") || ""
@@ -43,6 +46,7 @@ class GroupComponent extends React.Component<GroupProps> {
     });
     
     const responseJSON = await response.json();
+    this.loadingTasks = false;
 
     if(responseJSON.failed) {
       console.error(responseJSON);
@@ -66,7 +70,7 @@ class GroupComponent extends React.Component<GroupProps> {
   }
 
   @computed private get noContent(): React.ReactNode {
-    if(!this.createMode && this.tasks.length === 0) {
+    if(!this.createMode && !this.loadingTasks && this.tasks.length === 0) {
       return (
         <section className="no-content">
           <div className="illustration" />
@@ -122,6 +126,17 @@ class GroupComponent extends React.Component<GroupProps> {
     });
     this.props.refresh();
   }
+
+  @computed public get loading(): React.ReactNode {
+    if(!this.loadingTasks) return null;
+
+    return (
+      <section className="loader-container">
+        <Typography variant="h6" color="textSecondary">Loading Tasks...</Typography>
+        <Skeleton variant="rect" className="task-loader-skeleton" />
+      </section>
+    )
+  }
   
   public render() {
     return (
@@ -154,6 +169,7 @@ class GroupComponent extends React.Component<GroupProps> {
           </section>
         </header>
         {this.createMode && <NewTask groupId={this.props.id} refresh={() => this.getTasks()} cancelCreation={() => this.createMode = false} />}
+        {this.loading}
         {this.noContent}
         {this.tasksRender}
       </Paper>

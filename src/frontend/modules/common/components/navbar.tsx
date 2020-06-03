@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 export interface NavBarProps {
   title: string;
   setRefreshDrawerGroups: (refresh: () => any) => any;
+  changeTheme: (theme: "dark"|"light") => any;
 }
 
 @observer 
@@ -26,7 +27,11 @@ export class NavBar extends React.Component<NavBarProps> {
 
     return (
       <>
-        <ToDoDrawer open={this.drawerOpen} closeDrawer={() => this.closeDrawer()} setRefreshDrawerGroups={this.props.setRefreshDrawerGroups} />
+        <ToDoDrawer
+          changeTheme={this.props.changeTheme}
+          open={this.drawerOpen}
+          closeDrawer={() => this.closeDrawer()}
+          setRefreshDrawerGroups={this.props.setRefreshDrawerGroups} />
         <AppBar color="default" className="navbar" position="relative">
           <Toolbar>
             {isLoggedIn && (

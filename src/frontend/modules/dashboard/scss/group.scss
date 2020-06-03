@@ -62,4 +62,14 @@
       color: #01A8D5;
     }
   }
+
+  .loader-container {
+    text-align: center;
+    .task-loader-skeleton {
+      width: 100%;
+      margin: .5rem .35rem;
+      height: 160px;
+      border-radius: 5px;
+    }
+  }
 }

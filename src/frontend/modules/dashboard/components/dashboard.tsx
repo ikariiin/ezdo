@@ -11,6 +11,7 @@ import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { isMobile } from '../../util/is-mobile';
 import { MobileDashboard } from './mobile-dashboard';
 import { RoutesProps } from '../../root/components/routes';
+import { Introduction } from '../../introduction/components/introduction';
 
 export interface GroupUpdate {
   [key: number]: number
@@ -75,6 +76,7 @@ class DashboardComponent extends React.Component<DashboardProps> {
     }
     return (
       <main className="dashboard">
+        <Introduction />
         {this.notAuthrorized && <Redirect to="/login" />}
         {this.groups.map(group => (
           <Group

@@ -8,16 +8,18 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
 import AboutIcon from '@material-ui/icons/Info';
 import { API_GROUPS, API_HOST, API_USERNAME } from '../../util/api-routes';
-import { useSnackbar, withSnackbar, WithSnackbarProps } from 'notistack';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 import { Groups } from '../../../../backend/entities/groups';
 import GroupIcon from '@material-ui/icons/ViewModule';
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
+import ComputerIcon from '@material-ui/icons/Computer';
 
 export interface ToDoDrawerProps extends WithSnackbarProps {
   open: boolean;
   closeDrawer: () => void;
   setRefreshDrawerGroups: (refresh: () => any) => any;
+  changeTheme: (theme: "dark"|"light") => any;
 }
 
 @observer
@@ -134,6 +136,17 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
               <Avatar color="primary">{this.username[0].toLocaleUpperCase()}</Avatar>
             </ListItemAvatar>
             <ListItemText primary={this.username} />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => {
+              this.props.changeTheme(window.localStorage.getItem("ezdo-app-theme") === "dark" ? "light" : "dark");
+              this.props.closeDrawer();
+            }}>
+            <ListItemIcon>
+              <ComputerIcon />
+            </ListItemIcon>
+            <ListItemText primary="Toggle Theme" />
           </ListItem>
           <ListItem button onClick={() => { localStorage.removeItem("jwtKey"); window.location.pathname = "/login"; }}>
             <ListItemIcon>

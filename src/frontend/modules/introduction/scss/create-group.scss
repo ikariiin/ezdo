@@ -1,0 +1,16 @@
+.create-group-intro {
+  display: flex;
+  flex-direction: column;
+
+  .col-layout {
+    display: flex;
+
+    .group-screenshot {
+      background: url("../../../../resources/screenshots/group-creation.png");
+      width: calc(30.5 * 16px);
+      height: calc(30.5 * 9px);
+      border-radius: 5px;
+      background-size: cover;
+    }
+  }
+}

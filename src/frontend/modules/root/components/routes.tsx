@@ -14,8 +14,6 @@ export interface RoutesProps {
 }
 
 export const Routes: React.FunctionComponent<RoutesProps> = (props): JSX.Element => {
-  const jwtToken = localStorage.getItem('jwtKey');
-
   return (
     <>
       <Route exact path="/login">
@@ -39,7 +37,6 @@ export const Routes: React.FunctionComponent<RoutesProps> = (props): JSX.Element
       <Route path="/groups/:groupId/:groupName">
         <Group {...props} />
       </Route>
-      {!jwtToken && <Redirect to="/login" />}
     </>
   )
 }

@@ -1,13 +1,13 @@
 .login {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 64px);
   display: grid;
   grid-template-columns: 4fr 6fr;
   background: url("../../../../resources/background/pk-TKE9nLVNlto-unsplash.jpg");
   background-size: cover;
 
   .form-container {
-    background: #202020c4;
+    background: #202020de;
     padding: 10%;
 
     a {

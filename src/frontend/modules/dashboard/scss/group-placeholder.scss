@@ -28,7 +28,13 @@
 
   &:hover {
     .heading .add-icon {
-      color: #EB5757;
+      color: #F50057;
     }
+  }
+}
+
+.app-theme-light {
+  .group-placeholder {
+    border-color: rgba(23, 23, 23, 0.534);
   }
 }

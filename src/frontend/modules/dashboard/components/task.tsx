@@ -61,9 +61,11 @@ class TaskComponent extends React.Component<TaskProps> {
 
     return (
       <time className="date">
-        Due on {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
-        <br />
-        or, due {this.timeFromNow.includes("minutes") ? <span className="warn">{this.timeFromNow}</span> : this.timeFromNow}
+        <Typography color="textSecondary" variant="caption">
+          Due on {moment(this.props.dueDate).format("MMMM Do YYYY, h:mm a")}
+          <br />
+          or, due {this.timeFromNow.includes("minutes") ? <span className="warn">{this.timeFromNow}</span> : this.timeFromNow}
+        </Typography>
         {
           this.props.group === -1 && (
             <div className="archive-notice">Task has been archived</div>
