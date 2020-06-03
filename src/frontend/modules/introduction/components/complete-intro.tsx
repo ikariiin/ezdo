@@ -9,7 +9,7 @@ export const CompleteIntro: React.FunctionComponent<{}> = (): JSX.Element => (
       <Typography className="body2">
         That is it for the introduction to EZDo! Hope you enjoy your stay.
         If there are any issues, you can always create an issue in the issue tracker
-        at <a href="https://github.com/SaitamaSama/ezdo-hackerearth/issues">SaitamaSama/ezdo-hackerearth</a>!
+        at <a target="__blank" href="https://github.com/SaitamaSama/ezdo-hackerearth/issues">SaitamaSama/ezdo-hackerearth</a>!
       </Typography>
       <section className="image">
         <div className="pet-illustration" />
