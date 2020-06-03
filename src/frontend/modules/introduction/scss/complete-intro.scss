@@ -1,13 +1,15 @@
 .complete-intro {
   .col-layout {
     display: flex;
+    margin-bottom: 1rem;
 
     .pet-illustration {
       background: url("../../../../resources/illustration/undraw_through_the_park_lxnl.svg");
-      width: calc(30.5 * 16px);
+      width: calc(25.5 * 16px);
       height: calc(30.5 * 9px);
       border-radius: 5px;
       background-size: contain;
+      background-repeat: no-repeat;
     }
   }
 }
