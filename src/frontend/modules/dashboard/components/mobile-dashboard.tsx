@@ -12,6 +12,7 @@ import { Group } from './group';
 import GroupIcon from '@material-ui/icons/ViewModule';
 import AddIcon from '@material-ui/icons/Add';
 import { GroupPlaceholder } from './group-placeholder';
+import { Skeleton } from '@material-ui/lab';
 
 export interface MobileDashboardProps extends WithSnackbarProps {}
 
@@ -20,8 +21,10 @@ class MobileDashboardComponent extends React.Component<MobileDashboardProps> {
   @observable groups: Array<Groups> = [];
   @observable groupUpdates: GroupUpdate = {};
   @observable activeGroup?: Groups = undefined;
+  @observable private loading: boolean = false;
 
   private async getGroups(): Promise<void> {
+    this.loading = true;
     const response = await fetch(`${API_HOST}${API_GROUPS}`, {
       headers: {
         Authorization: localStorage.getItem('jwtKey') || ''
@@ -39,6 +42,7 @@ class MobileDashboardComponent extends React.Component<MobileDashboardProps> {
       return;
     }
 
+    this.loading = false;
     this.groups = responseJson;
     this.groups.map(group => group.id).forEach(groupId => this.groupUpdates[groupId] = 0);
     if(this.groups.length !== 0) {
@@ -77,10 +81,13 @@ class MobileDashboardComponent extends React.Component<MobileDashboardProps> {
 
     return (
       <main className="mobile-dashboard">
-        {!this.activeGroup && (
+        {this.loading && (
+          <Skeleton variant="rect" className="loading-skeleton" animation="wave" />
+        )}
+        {!this.activeGroup && !this.loading && (
           <GroupPlaceholder refresh={() => this.getGroups()} className="mobile-placeholder" createMode />
         )}
-        {this.activeGroup && (
+        {this.activeGroup && !this.loading && (
           <Group
             refresh={() => this.getGroups()} className="mobile-group-display"
             refreshGroup={(id: number) => this.refreshGroup(id)}
@@ -92,7 +99,7 @@ class MobileDashboardComponent extends React.Component<MobileDashboardProps> {
           showLabels
           onChange={(ev: any, id: number) => this.setActiveGroup(id)} className="bottom-nav">
           {this.groups.map(group => (
-            <BottomNavigationAction label={group.name} value={group.id} icon={<GroupIcon />} key={group.id} />
+            <BottomNavigationAction label={group.name} value={group.id} disabled={this.loading} icon={<GroupIcon />} key={group.id} />
           ))}
           {this.addGroupActions}
         </BottomNavigation>

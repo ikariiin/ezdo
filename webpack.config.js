@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 module.exports = {
   entry: [path.join(path.resolve(__dirname, 'src/frontend/'), 'mounter.tsx')],
@@ -76,5 +79,5 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
   },
-  mode: "production"
+  mode: process.env.APP_MODE
 };

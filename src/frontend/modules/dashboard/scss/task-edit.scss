@@ -1,3 +1,13 @@
+.app-theme-light {
+  .task-edit {
+    background: rgba(241, 241, 241, 0.8) !important;
+  }
+}
+.app-theme-dark {
+  .task-edit {
+    background: rgba(0,0,0,.4) !important
+  }
+}
 .task-edit {
   padding: .5rem;
   background: rgba(0,0,0,.4) !important;

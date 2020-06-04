@@ -25,18 +25,29 @@ rl.question("Port to listen to in the HTTP server(8080): ", (port) => {
     envConfig.HTTP_PORT = Number(port);
   }
   
-  const logFile = path.join(__dirname, "logs/ezdo.log");
-  rl.question(`Path to log file(${logFile}): `, (file) => {
-    if(file.trim().length === 0) {
-      envConfig.LOG_FILE = logFile;
-      if(!fs.existsSync(path.join(__dirname, "logs"))) fs.mkdirSync(path.join(__dirname, "logs"));
+  rl.question("App deploy mode [P]roduction/[D]evelopment (development by default): ", (mode) => {
+    if(mode.toLocaleLowerCase() === 'p') {
+      envConfig.APP_MODE = "production";
+    } else if(mode.toLocaleLowerCase() === 'd') {
+      envConfig.APP_MODE = "development";
     } else {
-      envConfig.LOG_FILE = file;
+      console.log("Could not identify mode, defaulting to development.");
+      envConfig.APP_MODE = "development";
     }
-    fs.closeSync(fs.openSync(envConfig.LOG_FILE, 'w'));
 
-    rl.close();
-  });
+    const logFile = path.join(__dirname, "logs/ezdo.log");
+    rl.question(`Path to log file(${logFile}): `, (file) => {
+      if(file.trim().length === 0) {
+        envConfig.LOG_FILE = logFile;
+        if(!fs.existsSync(path.join(__dirname, "logs"))) fs.mkdirSync(path.join(__dirname, "logs"));
+      } else {
+        envConfig.LOG_FILE = file;
+      }
+      fs.closeSync(fs.openSync(envConfig.LOG_FILE, 'w'));
+
+      rl.close();
+    });
+  })
 });
 
 rl.on('close', () => {

@@ -2,6 +2,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   flex-grow: 1;
+
+  .skeleton {
+    margin: .5rem;
+    border-radius: 5px;
+    height: calc(100% - 1rem);
+  }
 }
 
 @media screen and (min-width: 320px) and (max-width: 480px) {

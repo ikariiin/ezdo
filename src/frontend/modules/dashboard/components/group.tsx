@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, Paper, IconButton, Tooltip, Button } from '@material-ui/core';
+import { Typography, Paper, IconButton, Tooltip, Button, LinearProgress } from '@material-ui/core';
 import "../scss/group.scss";
 import AddIcon from '@material-ui/icons/AddTwoTone';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -132,8 +132,14 @@ class GroupComponent extends React.Component<GroupProps> {
 
     return (
       <section className="loader-container">
-        <Typography variant="h6" color="textSecondary">Loading Tasks...</Typography>
-        <Skeleton variant="rect" className="task-loader-skeleton" />
+        { this.tasks.length === 0 ? (
+          <>
+            <Typography variant="h6" color="textSecondary">Loading Tasks...</Typography>
+            <Skeleton variant="rect" className="task-loader-skeleton" />
+          </>
+        ) : (
+          <LinearProgress color="primary" className="progress-bar" />
+        ) }
       </section>
     )
   }

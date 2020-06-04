@@ -30,7 +30,7 @@ async function startApp(dbPath: string = '') {
       Groups,
       Todo
     ],
-    logging: false,
+    logging: process.env.APP_MODE === "development",
     synchronize: true
   });
 

@@ -36,6 +36,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 
+    .skeleton-task {
+      height: 160px;
+      border-radius: 5px;
+    }
+
     & > * {
       margin: .5rem;
     }

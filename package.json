@@ -1,6 +1,6 @@
 {
   "name": "todo-hackerearth",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Entry for StackHack",
   "main": "dist/backend/index.js",
   "scripts": {

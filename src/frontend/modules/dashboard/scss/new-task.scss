@@ -1,6 +1,16 @@
+.app-theme-light {
+  .new-task {
+    background: rgba(241, 241, 241, 0.8) !important;
+  }
+}
+.app-theme-dark {
+  .new-task {
+    background: rgba(0,0,0,.4) !important
+  }
+}
+
 .new-task {
   padding: .5rem;
-  background: rgba(0,0,0,.4) !important;
   margin: .3rem 0;
 
   .button-container {

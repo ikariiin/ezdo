@@ -5,8 +5,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo - HackerEarth</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    .temp-loading-screen {
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      background: var(--initial-theme-background);
+      color: var(--initial-theme-color);
+      text-align: center;
+    }
+    .temp-loading-screen .title {
+      font-family: Roboto, "Segoe UI", sans-serif;
+      font-weight: 900;
+      font-style: italic;
+      font-size: 36px;
+      margin: 14px;
+    }
+  </style>
 </head>
 <body>
-  <section data-mount=""></section>
+  <section data-mount="">
+    <div class="temp-loading-screen">
+      <section class="title">
+        Loading app, just a moment...
+      </section>
+    </div>
+  </section>
 </body>
+<script>
+  let theme = window.localStorage.getItem("ezdo-app-theme");
+  if(!theme) theme = "dark";
+
+  if(theme === "dark") {
+    document.body.style.setProperty("--initial-theme-background", "#000000");
+    document.body.style.setProperty("--initial-theme-color", "#EDEDED");
+  } else {
+    document.body.style.setProperty("--initial-theme-background", "#DEDEDE");
+    document.body.style.setProperty("--initial-theme-color", "#252525");
+  }
+</script>
 </html>

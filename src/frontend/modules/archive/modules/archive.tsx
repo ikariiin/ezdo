@@ -10,14 +10,17 @@ import { Redirect } from 'react-router-dom';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { RoutesProps } from '../../root/components/routes';
 import { ArchiveClearConfirm } from './archive-clear-confirm';
+import { Skeleton } from '@material-ui/lab';
 
 @observer
 class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> {
   @observable private tasks: Array<Todo> = [];
   @observable private notAuthorized: boolean = false;
   @observable private clearConfirm: boolean = false;
+  @observable private loading: boolean = false;
 
   private async fetchArchives(): Promise<void> {
+    this.loading = true;
     const response = await fetch(`${API_HOST}${API_GROUPS}/-1`, {
       method: "GET",
       headers: {
@@ -26,7 +29,7 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
     });
 
     const responseJSON = await response.json();
-    
+    this.loading = false;
     if(responseJSON.failed) {
       console.error(responseJSON);
       this.props.enqueueSnackbar(responseJSON.reason, {
@@ -68,7 +71,7 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
   }
 
   @computed private get renderEmptyArchive(): React.ReactNode {
-    if(this.tasks.length !== 0) return null;
+    if(this.tasks.length !== 0 || this.loading) return null;
 
     return (
       <section className="empty-archives">
@@ -97,6 +100,13 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
         </section>
         {this.renderEmptyArchive}
         <main className="tasks">
+          {this.loading && (
+            <>
+              <Skeleton variant="rect" className="skeleton-task" animation="wave" />
+              <Skeleton variant="rect" className="skeleton-task" animation="wave" />
+              <Skeleton variant="rect" className="skeleton-task" animation="wave" />
+            </>
+          )}
           {this.tasks.map(task => (
             <Task {...task} isArchive refresh={() => this.fetchArchives()} refreshGroup={() => this.fetchArchives()} key={task.id} />
           ))}

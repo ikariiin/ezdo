@@ -20,8 +20,11 @@ export interface TaskLabelProps extends WithSnackbarProps {
 class TaskLabelComponent extends React.Component<TaskLabelProps> {
   @observable private labelInput: boolean = false;
   @observable private newLabel: string = '';
+  @observable deletingIndex?: number; 
+  @observable tempAdditionLabel?: string;
 
   private async deleteLabel(labelKey: number): Promise<void> {
+    this.deletingIndex = labelKey;
     const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.todoId}/label/${labelKey}`, {
       method: "DELETE",
       headers: {
@@ -43,6 +46,7 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
       variant: "info"
     });
     console.log(responseJSON);
+    this.deletingIndex = undefined;
     this.props.refresh();
   }
 
@@ -63,8 +67,8 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
        .map((label, key) => (
          <Chip
           variant={this.props.labelHighlight ? "default" : "outlined"} size="small"
-          label={label} color={this.props.labelHighlight ? "primary" : "default"}
-          key={label} className="label-chip"
+          label={label} color={this.props.labelHighlight || this.deletingIndex === key ? "primary" : "default"}
+          key={`${this.deletingIndex === key ? 'Deleting: ' : ''}${label}`} className="label-chip"
           onDelete={() => this.deleteLabel(key)} />
        )),
       <Chip
@@ -82,8 +86,10 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
       });
       return;
     }
+    this.labelInput = false;
     // Shhhhh. :P
     const newLabelStr = this.props.label === '' ? this.newLabel.replace(/\/\//g, "\\\\") : `${this.props.label}//${this.newLabel.replace(/\//g, "\\\\")}`;
+    this.tempAdditionLabel = this.newLabel.replace(/\//g, "\\\\");
     const response = await fetch(`${API_HOST}${API_TODO_LABEL}/${this.props.todoId}`, {
       method: "PUT",
       headers: {
@@ -98,14 +104,16 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
       this.props.enqueueSnackbar(responseJSON.reason, {
         variant: "error"
       });
-      console.log(responseJSON);
+      console.error(responseJSON);
+      this.labelInput = true;
       return;
     }
 
     this.props.enqueueSnackbar("Label added successfully.", {
       variant: "success"
     });
-    this.labelInput = false;
+
+    this.tempAdditionLabel = undefined;
     this.newLabel = '';
     this.props.refresh();
   }
@@ -137,10 +145,17 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
     return null;
   }
 
+  @computed private get tempLabels(): React.ReactNode {
+    if(!this.tempAdditionLabel) return null;
+
+    return <Chip size="small" color="secondary" label={`Adding: ${this.tempAdditionLabel}...`} />;
+  }
+
   public render() {
     return (
       <section className="task-label-control">
         {this.labels}
+        {this.tempLabels}
         <br />
         {this.labelEdit}
       </section>
