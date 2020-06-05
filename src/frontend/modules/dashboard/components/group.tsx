@@ -104,6 +104,11 @@ class GroupComponent extends React.Component<GroupProps> {
   }
 
   private async deleteGroup(): Promise<void> {
+    this.confirmDelete = false;
+    const key = this.props.enqueueSnackbar(`Deleting group '${this.props.title}...'`, {
+      variant: "default",
+      autoHideDuration: 3000
+    });
     const response = await fetch(`${API_HOST}${API_GROUPS}/${this.props.id}`, {
       method: "DELETE",
       headers: {
@@ -112,7 +117,7 @@ class GroupComponent extends React.Component<GroupProps> {
     });
 
     const responseJSON = await response.json();
-
+    this.props.closeSnackbar(key);
     if(responseJSON.failed) {
       console.error(responseJSON);
       this.props.enqueueSnackbar(responseJSON.reason, {
