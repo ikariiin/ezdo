@@ -16,7 +16,7 @@ export function getTheme(mode: "light"|"dark" = "light") {
       }
     },
     typography: {
-      fontFamily: "Roboto, Sen, sans-serif",
+      fontFamily: "Inter, Sen, sans-serif",
       fontWeightBold: 900,
       fontWeightMedium: 500,
       fontWeightRegular: 400,

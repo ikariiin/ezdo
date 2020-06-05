@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, TextField, Button } from '@material-ui/core';
+import { Typography, TextField, Button, MuiThemeProvider } from '@material-ui/core';
 import "../scss/register.scss";
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
@@ -7,6 +7,7 @@ import { API_HOST, API_REGISTER } from '../../util/api-routes';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { RoutesProps } from '../../root/components/routes';
 import { Link } from 'react-router-dom';
+import { getTheme } from '../../root/components/mui-theme';
 
 @observer
 class RegisterComponent extends React.Component<WithSnackbarProps & RoutesProps> {
@@ -63,51 +64,53 @@ class RegisterComponent extends React.Component<WithSnackbarProps & RoutesProps>
 
   public render() {
     return (
-      <section className="register">
-        <section className="form-container">
-          <Typography variant="h4">
-            Register
-          </Typography>
-          <Typography variant="subtitle2">
-            for an account. Alternatively, if you already have one, <Link to="/login">login</Link>!
-          </Typography>
-          <form className="form" onSubmit={(ev) => { this.apiRegister(); ev.preventDefault(); }}>
-            <TextField
-              margin="normal"
-              variant="filled"
-              label="username"
-              value={this.username}
-              placeholder="johndoe1337"
-              onChange={ev => this.username = ev.target.value}
-              fullWidth />
-            <br />
-            <TextField
-              margin="normal"
-              variant="filled"
-              label="password"
-              type="password"
-              value={this.password}
-              placeholder="supersecret pass"
-              onChange={ev => this.password = ev.target.value}
-              fullWidth />
-            <br />
-            <TextField
-              margin="normal"
-              variant="filled"
-              label="confirm password"
-              type="password"
-              value={this.passwordRe}
-              placeholder="supersecret pass"
-              onChange={ev => this.passwordRe = ev.target.value}
-              fullWidth />
-            <br />
-            <br />
-            <Button size="large" variant="contained" type="submit" color="secondary">
+      <MuiThemeProvider theme={getTheme("dark")}>
+        <section className="register">
+          <section className="form-container">
+            <Typography variant="h4">
               Register
-            </Button>
-          </form>
+            </Typography>
+            <Typography variant="subtitle2">
+              for an account. Alternatively, if you already have one, <Link to="/login">login</Link>!
+            </Typography>
+            <form className="form" onSubmit={(ev) => { this.apiRegister(); ev.preventDefault(); }}>
+              <TextField
+                margin="normal"
+                variant="filled"
+                label="username"
+                value={this.username}
+                placeholder="johndoe1337"
+                onChange={ev => this.username = ev.target.value}
+                fullWidth />
+              <br />
+              <TextField
+                margin="normal"
+                variant="filled"
+                label="password"
+                type="password"
+                value={this.password}
+                placeholder="supersecret pass"
+                onChange={ev => this.password = ev.target.value}
+                fullWidth />
+              <br />
+              <TextField
+                margin="normal"
+                variant="filled"
+                label="confirm password"
+                type="password"
+                value={this.passwordRe}
+                placeholder="supersecret pass"
+                onChange={ev => this.passwordRe = ev.target.value}
+                fullWidth />
+              <br />
+              <br />
+              <Button size="large" variant="contained" type="submit" color="secondary">
+                Register
+              </Button>
+            </form>
+          </section>
         </section>
-      </section>
+      </MuiThemeProvider>
     );
   }
 }

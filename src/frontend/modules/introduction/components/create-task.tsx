@@ -15,7 +15,7 @@ export const CreateTask: React.FunctionComponent<{}> = (): JSX.Element => (
           other groups created as well. Write the task down, and the due date,
           hit the Create Task button!
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body1">
           Managing tasks is as easy as clicking the Menu Icon and simply clicking
           the option.
         </Typography>

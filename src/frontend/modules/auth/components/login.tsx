@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, TextField, Button } from '@material-ui/core';
+import { Typography, TextField, Button, MuiThemeProvider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import "../scss/login.scss";
 import { observer } from 'mobx-react';
@@ -7,6 +7,7 @@ import { observable } from 'mobx';
 import { API_HOST, API_LOGIN } from '../../util/api-routes';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
 import { RoutesProps } from '../../root/components/routes';
+import { getTheme } from '../../root/components/mui-theme';
 
 export interface LoginProps extends WithSnackbarProps, RoutesProps {
 }
@@ -58,38 +59,40 @@ class LoginComponent extends React.Component<LoginProps> {
 
   public render() {
     return (
-      <section className="login">
-        <section className="form-container">
-          <Typography variant="h4">Login</Typography>
-          <Typography variant="subtitle2">
-            If you don't have one yet, <Link to="/register">create one now</Link>!
-          </Typography>
-          <form className="form" onSubmit={(ev) => { this.apiLogIn(); ev.preventDefault(); }}>
-            <TextField margin="normal"
-              variant="filled"
-              label="username"
-              placeholder="johndoe1337"
-              onChange={ev => this.username = ev.target.value}
-              value={this.username}
-              fullWidth />
-            <br />
-            <TextField
-              type="password"
-              margin="normal"
-              variant="filled"
-              label="password"
-              placeholder="supersecret pass"
-              value={this.password}
-              onChange={ev => this.password = ev.target.value}
-              fullWidth />
-            <br />
-            <br />
-            <Button size="large" variant="contained" type="submit" color="secondary">
-              Login
-            </Button>
-          </form>
+      <MuiThemeProvider theme={getTheme("dark")}>
+        <section className="login">
+          <section className="form-container">
+            <Typography variant="h4">Login</Typography>
+            <Typography variant="subtitle2">
+              If you don't have one yet, <Link to="/register">create one now</Link>!
+            </Typography>
+            <form className="form" onSubmit={(ev) => { this.apiLogIn(); ev.preventDefault(); }}>
+              <TextField margin="normal"
+                variant="filled"
+                label="username"
+                placeholder="johndoe1337"
+                onChange={ev => this.username = ev.target.value}
+                value={this.username}
+                fullWidth />
+              <br />
+              <TextField
+                type="password"
+                margin="normal"
+                variant="filled"
+                label="password"
+                placeholder="supersecret pass"
+                value={this.password}
+                onChange={ev => this.password = ev.target.value}
+                fullWidth />
+              <br />
+              <br />
+              <Button size="large" variant="contained" type="submit" color="secondary">
+                Login
+              </Button>
+            </form>
+          </section>
         </section>
-      </section>
+      </MuiThemeProvider>
     )
   }
 }

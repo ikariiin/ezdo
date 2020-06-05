@@ -176,6 +176,8 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
 
   public render() {
     const { classes } = this.props;
+    if(!localStorage.getItem("jwtKey")) return null;
+    
     return (
       <>
         <Hidden smUp implementation="js">

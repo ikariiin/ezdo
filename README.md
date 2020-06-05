@@ -9,10 +9,10 @@ git clone https://github.com/SaitamaSama/ezdo-hackerearth
 # Important note about this step:
 # this application requires certain dependencies which uses node-gyp, so build-tools installation is recommended
 npm i
-# Build the app
-npm run build
 # Install the app
 node index.js
+# Build the app
+npm run build
 # this will create a .env file which contains the database location and port
 # edit this file to change these as required
 # Run the app

@@ -1,11 +1,10 @@
 .login {
-  width: calc(100vw - 250px);
-  margin-left: 250px;
   height: calc(100vh - 64px);
   display: grid;
   grid-template-columns: 4fr 6fr;
-  background: url("../../../../resources/background/pk-TKE9nLVNlto-unsplash.jpg");
+  background: url("../../../../resources/background/login-bg.webp");
   background-size: cover;
+  color: #EAEAEA;
 
   .form-container {
     background: #202020de;

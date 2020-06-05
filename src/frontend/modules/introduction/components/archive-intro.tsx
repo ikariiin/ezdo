@@ -7,10 +7,10 @@ export const ArchiveIntro: React.FunctionComponent<{}> = (): JSX.Element => (
     <Typography variant="h6">Archives</Typography>
     <section className="col-layout">
       <section className="text">
-        <Typography variant="body2">
+        <Typography variant="body1">
           You can archive a task by clicking the archive icon on a task.
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body1">
           If you navigate to the archive page from the drawer you will be
           able to see all the archived tasks, and clear them out as well!
         </Typography>
