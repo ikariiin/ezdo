@@ -148,14 +148,14 @@ class TaskLabelComponent extends React.Component<TaskLabelProps> {
   @computed private get tempLabels(): React.ReactNode {
     if(!this.tempAdditionLabel) return null;
 
-    return <Chip size="small" color="secondary" label={`Adding: ${this.tempAdditionLabel}...`} />;
+    return <Chip className="label-chip" size="small" color="secondary" label={`Adding: ${this.tempAdditionLabel}...`} />;
   }
 
   public render() {
     return (
       <section className="task-label-control">
-        {this.labels}
         {this.tempLabels}
+        {this.labels}
         <br />
         {this.labelEdit}
       </section>

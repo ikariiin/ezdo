@@ -22,28 +22,28 @@ export function getTheme(mode: "light"|"dark" = "light") {
       fontWeightRegular: 400,
       fontSize: 15,
       h4: {
-        fontWeight: 700,
-        fontFamily: "'Josefin Sans', Sen, sans-serif"
+        fontWeight: 800,
+        fontFamily: "'Poppins', Sen, sans-serif"
       },
       h3: {
-        fontWeight: 700,
-        fontFamily: "'Josefin Sans', Sen, sans-serif"
+        fontWeight: 800,
+        fontFamily: "'Poppins', Sen, sans-serif"
       },
       h1: {
-        fontWeight: 700,
-        fontFamily: "'Josefin Sans', Sen, sans-serif"
+        fontWeight: 800,
+        fontFamily: "'Poppins', Sen, sans-serif"
       },
       h2: {
-        fontWeight: 700,
-        fontFamily: "'Josefin Sans', Sen, sans-serif"
+        fontWeight: 800,
+        fontFamily: "'Poppins', Sen, sans-serif"
       },
       h6: {
-        fontWeight: 700,
-        fontFamily: "'Josefin Sans', Sen, sans-serif"
+        fontWeight: 800,
+        fontFamily: "'Poppins', Sen, sans-serif"
       },
       h5: {
-        fontWeight: 700,
-        fontFamily: "'Josefin Sans', Sen, sans-serif"
+        fontWeight: 800,
+        fontFamily: "'Poppins', Sen, sans-serif"
       },
     },
     shape: {
