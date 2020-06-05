@@ -1,6 +1,8 @@
 .group-page {
-  margin-top: .5rem;
+  margin-top: 1.5rem;
   flex-grow: 1;
+  width: calc(100vw - 250px);
+  margin-left: 250px;
 
   .no-results {
     height: 100%;
@@ -18,5 +20,12 @@
       width: 450px;
       margin-bottom: 1.5rem;
     }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .group-page {
+    margin-left: 0;
+    width: 100vw;
   }
 }

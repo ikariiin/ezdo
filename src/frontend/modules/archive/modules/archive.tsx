@@ -21,6 +21,13 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
 
   private async fetchArchives(): Promise<void> {
     this.loading = true;
+    let key: React.ReactText = 0;
+    if(this.tasks.length !== 0) {
+      key = this.props.enqueueSnackbar("Refreshing...", {
+        variant: "default",
+        autoHideDuration: 2000
+      });
+    }
     const response = await fetch(`${API_HOST}${API_GROUPS}/-1`, {
       method: "GET",
       headers: {
@@ -30,6 +37,7 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
 
     const responseJSON = await response.json();
     this.loading = false;
+    this.props.closeSnackbar(key);
     if(responseJSON.failed) {
       console.error(responseJSON);
       this.props.enqueueSnackbar(responseJSON.reason, {
@@ -100,7 +108,7 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
         </section>
         {this.renderEmptyArchive}
         <main className="tasks">
-          {this.loading && (
+          {this.loading && this.tasks.length === 0 && (
             <>
               <Skeleton variant="rect" className="skeleton-task" animation="wave" />
               <Skeleton variant="rect" className="skeleton-task" animation="wave" />

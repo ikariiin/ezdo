@@ -1,7 +1,7 @@
 import * as React from 'react';
 import "../scss/navbar.scss";
 import MenuIcon from '@material-ui/icons/Menu';
-import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, Hidden } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import { ToDoDrawer } from './todo-drawer';
@@ -35,9 +35,11 @@ export class NavBar extends React.Component<NavBarProps> {
         <AppBar color="default" className="navbar" position="relative">
           <Toolbar>
             {isLoggedIn && (
-              <IconButton onClick={() => this.drawerOpen = !this.drawerOpen}>
-                <MenuIcon />
-              </IconButton>
+              <Hidden smUp implementation="js">
+                <IconButton onClick={() => this.drawerOpen = !this.drawerOpen}>
+                  <MenuIcon />
+                </IconButton>
+              </Hidden>
             )}
             <Typography variant="h6" className="app-name">
               {this.props.title}

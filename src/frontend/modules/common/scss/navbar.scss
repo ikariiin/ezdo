@@ -1,4 +1,7 @@
 .navbar {
+  // this zindex value is from the source of the drawer. might change.
+  z-index: 1201 !important;
+
   .app-name {
     margin-left: 36px;
     flex-grow: 1;

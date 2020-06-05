@@ -1,10 +1,12 @@
 .archive {
-  margin: 0 .8rem;
+  margin-top: .8rem;
   flex-grow: 1;
   height: 100px;
   overflow: auto;
   display: flex;
   flex-direction: column;
+  margin-left: 250px;
+  width: calc(100vw - 250px);
 
   .header {
     margin: .75rem .5rem;
@@ -49,6 +51,9 @@
 
 @media screen and (min-width: 320px) and (max-width: 480px) {
   .archive {
+    width: 100vw;
+    margin-left: 0;
+
     .tasks {
       grid-template-columns: 1fr;
     }

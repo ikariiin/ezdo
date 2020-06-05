@@ -3,6 +3,12 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   margin: 0 .5rem;
 
+  .task-skeleton {
+    border-radius: 5px;
+    margin: .5rem;
+    height: 160px;
+  }
+
   & > * {
     margin: 0 .5rem;
   }

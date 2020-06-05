@@ -13,6 +13,8 @@ import { setDB } from './middlewares/database';
 import { config } from 'dotenv';
 import { join, resolve } from 'path';
 import { logger } from './middlewares/logger';
+import { promises as fs } from 'fs';
+import { createServer as createHTTPSServer } from 'https';
 
 async function startApp(dbPath: string = '') {
   console.log("DB Path: ", process.env.DATABASE || dbPath);
@@ -46,6 +48,21 @@ async function startApp(dbPath: string = '') {
   });
 
   app.listen(process.env.HTTP_PORT, () => console.log("Server started on port " + process.env.HTTP_PORT));
+
+  if(process.env.ALLOW_HTTPS) {
+    if(!process.env.SSL_PRIVATE_KEY || !process.env.SSL_CERTIFICATE || !process.env.SSL_CA || !process.env.HTTPS_PORT) {
+      console.error("Could not start HTTPS server. Config not properly set.");
+      return;
+    }
+    const creds = {
+      key: await fs.readFile(process.env.SSL_PRIVATE_KEY),
+      cert: await fs.readFile(process.env.SSL_CERTIFICATE),
+      ca: await fs.readFile(process.env.SSL_CA)
+    };
+
+    const httpsServer = createHTTPSServer(creds, app);
+    httpsServer.listen(Number(process.env.HTTPS_PORT), () => console.log(`HTTPS Server started on port ${process.env.HTTPS_PORT}`));
+  }
 }
 
 config();

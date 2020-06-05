@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, Typography, Divider, ListItemText, Avatar, ListItemAvatar } from '@material-ui/core';
+import { Drawer, List, ListItem, ListItemIcon, Typography, Divider, ListItemText, Avatar, ListItemAvatar, Hidden, Theme, createStyles, withStyles, WithStyles } from '@material-ui/core';
 import "../scss/todo-drawer.scss";
 import { Link } from 'react-router-dom';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -15,7 +15,11 @@ import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 import ComputerIcon from '@material-ui/icons/Computer';
 
-export interface ToDoDrawerProps extends WithSnackbarProps {
+const styles = (theme: Theme) => createStyles({
+  toolbar: theme.mixins.toolbar
+});
+
+export interface ToDoDrawerProps extends WithSnackbarProps, WithStyles<typeof styles> {
   open: boolean;
   closeDrawer: () => void;
   setRefreshDrawerGroups: (refresh: () => any) => any;
@@ -71,93 +75,126 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
     });
   }
 
-  public render() {
+  private get drawerContent(): React.ReactNode {
     return (
-      <Drawer open={this.props.open} onClose={this.props.closeDrawer} className="drawer" classes={{
-        paper: "drawer-paper"
-      }}>
-        <List>
-          <section className="nav-header">
-            <Typography variant="h5">
-              EZDo
-            </Typography>
-          </section>
-          <Divider />
-          <section className="nav-header sub">
-            Navigate
-          </section>
-          <ListItem button component={Link} to="/" onClick={this.props.closeDrawer}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </ListItem>
-          <ListItem button component={Link} to="/archive" onClick={this.props.closeDrawer}>
-            <ListItemIcon>
-              <ArchiveIcon />
-            </ListItemIcon>
-            <ListItemText primary="Archive" />
-          </ListItem>
-          <ListItem button component={Link} to="/search" onClick={this.props.closeDrawer}>
-            <ListItemIcon>
-              <SearchIcon />
-            </ListItemIcon>
-            <ListItemText primary="Search" />
-          </ListItem>
-          <ListItem button component={Link} to="/about" onClick={this.props.closeDrawer}>
-            <ListItemIcon>
-              <AboutIcon />
-            </ListItemIcon>
-            <ListItemText primary="About" />
-          </ListItem>
-          <Divider />
-          <section className="nav-header sub">
-            Groups
-          </section>
-          {this.groups.length === 0 && (
-            <ListItem>
-              <ListItemText primary="No groups created yet" />
-            </ListItem>
-          )}
-          {this.groups.map(group => (
-            <ListItem button component={Link} to={`/groups/${group.id}/${group.name}`} onClick={this.props.closeDrawer}>
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <ListItemText primary={group.name} />
-            </ListItem>
-          ))}
-          <Divider />
-          <section className="nav-header sub">
-            Profile
-          </section>
+      <List>
+        <section className="nav-header">
+          <Typography variant="h5">
+            EZDo
+          </Typography>
+        </section>
+        <Divider />
+        <section className="nav-header sub">
+          Navigate
+        </section>
+        <ListItem button component={Link} to="/" onClick={this.props.closeDrawer}>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+        <ListItem button component={Link} to="/archive" onClick={this.props.closeDrawer}>
+          <ListItemIcon>
+            <ArchiveIcon />
+          </ListItemIcon>
+          <ListItemText primary="Archive" />
+        </ListItem>
+        <ListItem button component={Link} to="/search" onClick={this.props.closeDrawer}>
+          <ListItemIcon>
+            <SearchIcon />
+          </ListItemIcon>
+          <ListItemText primary="Search" />
+        </ListItem>
+        <ListItem button component={Link} to="/about" onClick={this.props.closeDrawer}>
+          <ListItemIcon>
+            <AboutIcon />
+          </ListItemIcon>
+          <ListItemText primary="About" />
+        </ListItem>
+        <Divider />
+        <section className="nav-header sub">
+          Groups
+        </section>
+        {this.groups.length === 0 && (
           <ListItem>
-            <ListItemAvatar>
-              <Avatar color="primary">{this.username[0].toLocaleUpperCase()}</Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={this.username} />
+            <ListItemText primary="No groups created yet" />
           </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              this.props.changeTheme(window.localStorage.getItem("ezdo-app-theme") === "dark" ? "light" : "dark");
-              this.props.closeDrawer();
-            }}>
+        )}
+        {this.groups.map(group => (
+          <ListItem button component={Link} to={`/groups/${group.id}/${group.name}`} onClick={this.props.closeDrawer}>
             <ListItemIcon>
-              <ComputerIcon />
+              <GroupIcon />
             </ListItemIcon>
-            <ListItemText primary="Toggle Theme" />
+            <ListItemText primary={group.name} />
           </ListItem>
-          <ListItem button onClick={() => { localStorage.removeItem("jwtKey"); window.location.pathname = "/login"; }}>
-            <ListItemIcon>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
-        </List>
-      </Drawer>
+        ))}
+        <Divider />
+        <section className="nav-header sub">
+          Profile
+        </section>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar color="primary">{this.username[0].toLocaleUpperCase()}</Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={this.username} />
+        </ListItem>
+        <ListItem
+          button
+          onClick={() => {
+            this.props.changeTheme(window.localStorage.getItem("ezdo-app-theme") === "dark" ? "light" : "dark");
+            this.props.closeDrawer();
+          }}>
+          <ListItemIcon>
+            <ComputerIcon />
+          </ListItemIcon>
+          <ListItemText primary="Toggle Theme" />
+        </ListItem>
+        <ListItem button onClick={() => { localStorage.removeItem("jwtKey"); window.location.pathname = "/login"; }}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItem>
+      </List>
+    );
+  }
+
+  public render() {
+    const { classes } = this.props;
+    return (
+      <>
+        <Hidden smUp implementation="js">
+          <Drawer
+            open={this.props.open}
+            onClose={this.props.closeDrawer}
+            variant="temporary"
+            className="drawer"
+            classes={{
+              paper: "drawer-paper"
+            }}
+            ModalProps={{
+              keepMounted: true
+            }}
+          >
+            {this.drawerContent}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="js">
+          <Drawer
+            open
+            className="drawer"
+            classes={{
+              paper: "drawer-paper"
+            }}
+            variant="permanent"
+          >
+            <div className={classes.toolbar} />
+            {this.drawerContent}
+          </Drawer>
+        </Hidden>
+      </>
     );
   }
 } 
 
-export const ToDoDrawer = withSnackbar(ToDoDrawerComponent);
+export const ToDoDrawer = withStyles(styles)(withSnackbar(ToDoDrawerComponent));
