@@ -76,6 +76,21 @@ class ToDoDrawerComponent extends React.Component<ToDoDrawerProps> {
   }
 
   private get drawerContent(): React.ReactNode {
+    if(!localStorage.getItem("jwtKey")) {
+      return (
+        <List>
+          <section className="nav-header">
+            <Typography variant="h5">
+              EZDo
+            </Typography>
+          </section>
+          <Divider />
+          <section className="nav-header">
+            <Typography variant="body2" color="textSecondary">Login to view content</Typography>
+          </section>
+        </List>
+      )
+    }
     return (
       <List>
         <section className="nav-header">
