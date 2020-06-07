@@ -19,30 +19,30 @@ export function getTheme(mode: "light"|"dark" = "light") {
       fontFamily: "Inter, Sen, sans-serif",
       fontWeightBold: 900,
       fontWeightMedium: 500,
-      fontWeightRegular: 400,
+      fontWeightRegular: 500,
       fontSize: 15,
       h4: {
-        fontWeight: 800,
+        fontWeight: 700,
         fontFamily: "'Poppins', Sen, sans-serif"
       },
       h3: {
-        fontWeight: 800,
+        fontWeight: 700,
         fontFamily: "'Poppins', Sen, sans-serif"
       },
       h1: {
-        fontWeight: 800,
+        fontWeight: 700,
         fontFamily: "'Poppins', Sen, sans-serif"
       },
       h2: {
-        fontWeight: 800,
+        fontWeight: 700,
         fontFamily: "'Poppins', Sen, sans-serif"
       },
       h6: {
-        fontWeight: 800,
+        fontWeight: 700,
         fontFamily: "'Poppins', Sen, sans-serif"
       },
       h5: {
-        fontWeight: 800,
+        fontWeight: 700,
         fontFamily: "'Poppins', Sen, sans-serif"
       },
     },
