@@ -20,8 +20,10 @@ export interface TaskEditProps extends WithSnackbarProps {
 class TaskEditComponent extends React.Component<TaskEditProps> {
   @observable private task: string = "";
   @observable private dueDate: Date = new Date();
+  @observable private submitting: boolean = false;
 
   private async fetchTodo(): Promise<void> {
+    this.submitting = true;
     const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.todoId}`, {
       headers: {
         Authorization: localStorage.getItem('jwtKey') || ''
@@ -29,7 +31,7 @@ class TaskEditComponent extends React.Component<TaskEditProps> {
     });
 
     const responseJSON = await response.json();
-
+    this.submitting = false;
     if(responseJSON.failed) {
       console.error(responseJSON);
       this.props.enqueueSnackbar(responseJSON.reason, {
@@ -104,9 +106,12 @@ class TaskEditComponent extends React.Component<TaskEditProps> {
             <CancelIcon />
             Cancel
           </Button>
-          <Button variant="contained" size="small" color="secondary" onClick={() => this.editTask()}>
-            <EditIcon />
-            Save task
+          <Button variant="contained" size="small" color="secondary" onClick={() => this.editTask()} disabled={this.submitting}>
+            {this.submitting ? "Submitting" : (
+              <>
+                <EditIcon /> Save task
+              </>
+            )}
           </Button>
         </section>
       </Paper>

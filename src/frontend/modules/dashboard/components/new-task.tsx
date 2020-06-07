@@ -20,6 +20,7 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
   @observable private task: string = "";
   @observable private label: string = "";
   @observable private dueDate?: Date = new Date();
+  @observable private submitting?: boolean = false;
 
   private resetState(): void {
     this.task = "";
@@ -35,7 +36,7 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
       });
       return;
     }
-
+    this.submitting = true;
     const response = await fetch(`${API_HOST}${API_TODO_CREATE}`, {
       method: "POST",
       headers: {
@@ -51,6 +52,7 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
     });
 
     const responseJSON = await response.json();
+    this.submitting = false;
     if(responseJSON.failed) {
       this.props.enqueueSnackbar(responseJSON.reason, {
         variant: "error"
@@ -100,9 +102,12 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
             <CancelIcon />
             Cancel
           </Button>
-          <Button variant="contained" size="small" color="secondary" onClick={() => this.createTask()}>
-            <AddIcon />
-            Add task
+          <Button variant="contained" size="small" color="secondary" onClick={() => this.createTask()} disabled={this.submitting}>
+            {this.submitting ? "Submitting" : (
+              <>
+                <AddIcon /> Add task
+              </>
+            )}
           </Button>
         </section>
       </Paper>
