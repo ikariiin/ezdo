@@ -14,6 +14,7 @@ export interface ImageUploaderProps extends WithSnackbarProps {
   removeImage: (id: number) => any;
   changeUploadProgress: (progress: boolean) => any;
   images?: Array<number>;
+  editMode?: boolean;
 }
 
 export interface FrontendImageUpload {
@@ -119,7 +120,7 @@ class ImageUploaderComponent extends React.Component<ImageUploaderProps> {
         {this.images.map((image, index) => (
           <ImageEmbed removeImage={(id?: number) => this.removeImage(id)} {...image} key={index} />
         ))}
-        <Dropzone onDrop={files => this.addFiles(files)}>
+        <Dropzone onDrop={files => this.addFiles(files)} accept="image/*">
           {({ getRootProps, getInputProps }: DropzoneState) => (
             <Paper {...getRootProps()} className="image-upload-dropzone" elevation={8}>
               <input {...getInputProps()} />

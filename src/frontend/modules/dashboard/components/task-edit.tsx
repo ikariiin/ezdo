@@ -24,6 +24,7 @@ class TaskEditComponent extends React.Component<TaskEditProps> {
   @observable private taskImages: Array<number> = [];
   @observable private imageUploadInProgress: boolean = false;
   @observable private submitting: boolean = false;
+  @observable private editedTaskImages: Array<number> = [];
 
   private async fetchTodo(): Promise<void> {
     const response = await fetch(`${API_HOST}${API_TODOS}/${this.props.todoId}`, {
@@ -45,9 +46,9 @@ class TaskEditComponent extends React.Component<TaskEditProps> {
     this.task = todo.task;
     this.dueDate = todo.dueDate;
     if(!todo.images) {
-      this.taskImages = [];
     } else {
       this.taskImages.push(...todo.images.split(',').map(id => Number(id)));
+      this.editedTaskImages.push(...todo.images.split(',').map(id => Number(id)));
     }
   }
 
@@ -63,7 +64,7 @@ class TaskEditComponent extends React.Component<TaskEditProps> {
         'Content-Type': 'application/json'
       },
       method: "PUT",
-      body: JSON.stringify({ dueDate: this.dueDate, task: this.task, images: this.taskImages.join(',') })
+      body: JSON.stringify({ dueDate: this.dueDate, task: this.task, images: this.editedTaskImages.join(',') })
     });
 
     const responseJSON = await response.json();
@@ -109,12 +110,16 @@ class TaskEditComponent extends React.Component<TaskEditProps> {
           inputVariant="outlined"
           onChange={date => this.dueDate = !date ? new Date() : date?.toDate()}
         />
-        <ImageUploader
-          attachImage={id => this.taskImages.push(id)}
-          removeImage={id => this.taskImages = this.taskImages.filter(imageId => imageId !== id)}
-          changeUploadProgress={(progress: boolean) => this.imageUploadInProgress = progress} 
-          images={this.taskImages}
-        />
+        {this.taskImages.length !== 0 ? (
+          <ImageUploader
+            attachImage={id => this.editedTaskImages.push(id)}
+            removeImage={id => this.taskImages = this.editedTaskImages.filter(imageId => imageId !== id)}
+            changeUploadProgress={(progress: boolean) => this.imageUploadInProgress = progress} 
+            images={this.taskImages}
+            editMode
+          />
+        ) : null}
+        { /* TODO: Fix the rendering problem for when user edits a non-image'd task */ }
         <section className="button-container">
           <Button variant="outlined" color="primary" size="small" onClick={this.props.onCancel}>
             <CancelIcon />
