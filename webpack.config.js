@@ -30,13 +30,13 @@ module.exports = {
         "og:author": "Gourab Nag",
         "twitter:creator": "@SaitamaSama1337",
         "twitter:card": "summary_large_image",
-        "theme": "#202020"
+        "theme": "#F50057"
       }
     }),
     new WebpackPwaManifest({
       name: "EZDo - Manage your tasks",
       short_name: "EZDo",
-      "theme-color": "#EB5757",
+      "theme-color": "#F50057",
       display: "standalone",
       background_color: "#151515",
       description: "Task management app",
@@ -52,28 +52,6 @@ module.exports = {
         { from: path.join(__dirname, "src/resources/social-images"), to: "social-images" }
       ]
     })
-    // new SocialTags({
-    //   appUrl: 'https://ligma.tech',
-    //   facebook: {
-    //     'fb:app_id': "2612236785666240",
-    //     'og:url': "https://ligma.tech",
-    //     'og:type': "website",
-    //     'og:title': "EZDo",
-    //     'og:image': './src/resources/screenshots/ezdo-social.png',
-    //     'og:description': "A task management app for the modern web. Manage your tasks through a carefully designed UX and focusing simplicity.",
-    //     'og:site_name': "EZDo - A task management app for the modern web",
-    //     'og:locale': "en_IN",
-    //   },
-    //   twitter: {
-    //     "twitter:card": "summary",
-    //     "twitter:site": "@ezdotasks",
-    //     "twitter:creator": "@SaitamaSama1337",
-    //     "twitter:url": "https://ligma.tech",
-    //     "twitter:title": "EZDo",
-    //     "twitter:description": "A task management app for the modern web. Manage your tasks through a carefully designed UX and focusing simplicity.",
-    //     "twitter:image": './src/resources/screenshots/ezdo-social.png'
-    //   },
-    // })
   ],
   module: {
     rules: [

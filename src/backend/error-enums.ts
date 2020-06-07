@@ -5,5 +5,7 @@ export enum ErrorEnums {
   UserAlreadyExists,
   UserDoesNotExist,
   InvalidUserCredentials,
-  TodoNotFound
+  TodoNotFound,
+  ImageNotSaved,
+  ImageNotFound
 }

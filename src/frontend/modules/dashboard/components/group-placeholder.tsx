@@ -18,10 +18,12 @@ export interface GroupPlaceholderProps extends WithSnackbarProps {
 class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
   @observable private editMode: boolean = false;
   @observable private groupName: string = "";
+  @observable private submitting: boolean = false;
 
   private resetState(): void {
     this.editMode = false;
     this.groupName = '';
+    this.submitting = false;
   }
 
   private async createGroup(): Promise<void> {
@@ -31,6 +33,7 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
       });
       return;
     }
+    this.submitting = true;
     const response = await fetch(`${API_HOST}${API_GROUPS}`, {
       method: "POST",
       headers: {
@@ -42,7 +45,7 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
        })
     });
     const responseJSON = await response.json();
-    
+    this.submitting = false;
     if(responseJSON.failed) {
       console.error(responseJSON);
       this.props.enqueueSnackbar(responseJSON.reason, {
@@ -93,8 +96,12 @@ class GroupPlaceholderComponent extends React.Component<GroupPlaceholderProps> {
         <Button variant="text" onClick={(ev: React.MouseEvent<HTMLButtonElement>) => this.closeEditMode(ev)}>
           Cancel
         </Button>
-        <Button variant="text" color="secondary" type="submit">
-          Create group <ArrowRightIcon />
+        <Button variant="text" color="secondary" type="submit" disabled={this.submitting}>
+          {this.submitting ? "Submitting..." : (
+            <>
+              Create group <ArrowRightIcon />
+            </>
+          )}
         </Button>
       </form>
     );

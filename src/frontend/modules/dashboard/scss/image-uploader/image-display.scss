@@ -1,0 +1,77 @@
+.image-display {
+  display: flex;
+  margin: .5rem 0;
+  flex-wrap: wrap;
+
+  .task-image {
+    width: 84px;
+    height: 84px;
+    border-radius: 5px;
+    margin: .25rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+    position: relative;
+
+    .delete-icon {
+      position: absolute;
+      top: .1rem;
+      right: .1rem;
+      opacity: 0;
+      background: rgba(0,0,0,.6);
+      transition: 100ms all ease;
+    }
+    &:hover {
+      .delete-icon {
+        opacity: 1;
+      }
+    }
+  }
+  .task-images-lightbox {
+    z-index: 1600 !important;
+  
+    .lightbox-image {
+      height: auto;
+      max-height: calc(100vh - 2rem);
+      width: auto;
+      max-width: calc(100vw - 2rem);
+      margin: 1rem;
+      border-radius: 5px;
+    }
+
+    .actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 2.5rem;
+      cursor: pointer;
+      width: 6vw;
+      display: flex;
+      justify-content: flex-end;
+
+      .icon {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .image-display {
+    .task-image {
+      .delete-icon {
+        display: none;
+      }
+    }
+    .task-images-lightbox {
+      .actions {
+        background: #363636;
+        bottom: 0;
+        top: auto;
+        right: 0;
+        width: 100vw;
+      }
+    }
+  }
+}

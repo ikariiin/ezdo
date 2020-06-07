@@ -20,4 +20,7 @@ export class Todo {
 
   @Column({ name: "author" })
   author!: string;
+
+  @Column({ name: "Images", comment: "Comma separated Image ids", nullable: true })
+  images?: string;
 }

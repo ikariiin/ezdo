@@ -12,7 +12,7 @@ export async function createTodo(req: express.Request, res: express.Response): P
     return;
   }
   
-  const { groupId, date, label, task } = req.body;
+  const { groupId, date, label, task, images } = req.body;
   try {
     const username = getUsernameFromJWT(jwtKey);
 
@@ -24,7 +24,8 @@ export async function createTodo(req: express.Request, res: express.Response): P
       group: groupId,
       author: username,
       label,
-      task
+      task,
+      images
     });
 
     res.json({

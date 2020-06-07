@@ -16,6 +16,7 @@ import { TaskEdit } from './task-edit';
 import { TaskMove } from './dialogs/task-move';
 import { Highlight } from '../../common/components/highlight';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
+import { ImageDisplay } from './image-uploader/image-display';
 
 export interface TaskProps extends Todo, WithSnackbarProps {
   refresh: () => void;
@@ -212,6 +213,7 @@ class TaskComponent extends React.Component<TaskProps> {
               highlight={this.props.taskHighlight} />
           ) : this.props.task}
         </Typography>
+        <ImageDisplay images={this.props.images} refresh={this.props.refresh} todoId={this.props.id} />
         <TaskLabel
           refresh={this.props.refresh}
           groupId={this.props.group}

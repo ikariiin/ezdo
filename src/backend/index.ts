@@ -15,6 +15,8 @@ import { join, resolve } from 'path';
 import { logger } from './middlewares/logger';
 import { promises as fs } from 'fs';
 import { createServer as createHTTPSServer } from 'https';
+import { ImageRouter } from './routes/image';
+import { Image } from './entities/image';
 
 async function startApp(dbPath: string = '') {
   console.log("DB Path: ", process.env.DATABASE || dbPath);
@@ -30,7 +32,8 @@ async function startApp(dbPath: string = '') {
     entities: [
       User,
       Groups,
-      Todo
+      Todo,
+      Image
     ],
     logging: process.env.APP_MODE === "development",
     synchronize: true
@@ -43,6 +46,7 @@ async function startApp(dbPath: string = '') {
   app.use("/api/users", UserAuthRouter);
   app.use("/api/todo", TodoRouter);
   app.use("/api/groups", GroupRouter);
+  app.use("/api/image", ImageRouter);
   app.use("*", async (req: express.Request, res: express.Response) => {
     res.sendFile(resolve(join(__dirname, '../../dist/index.html')));
   });

@@ -1,0 +1,36 @@
+// .app-theme-light {
+//   .image-uploader {
+//     .image-upload-dropzone {
+//       border: 1px solid rgba(0,0,0,.6);
+//     }
+//   }
+// }
+// .app-theme-dark {
+//   .image-uploader {
+//     .image-upload-dropzone {
+//       border: 1px solid rgba(255,255,255,.6);
+//     }
+//   }
+// }
+
+.image-uploader {
+  display: flex;
+  margin: .5rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .image-upload-dropzone {
+    margin: .25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 84px;
+    width: 84px;
+    padding: .2rem;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    font-size: .8rem;
+  }  
+}

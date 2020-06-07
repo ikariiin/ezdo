@@ -35,17 +35,27 @@ rl.question("Port to listen to in the HTTP server(8080): ", (port) => {
       envConfig.APP_MODE = "development";
     }
 
-    const logFile = path.join(__dirname, "logs/ezdo.log");
-    rl.question(`Path to log file(${logFile}): `, (file) => {
-      if(file.trim().length === 0) {
-        envConfig.LOG_FILE = logFile;
-        if(!fs.existsSync(path.join(__dirname, "logs"))) fs.mkdirSync(path.join(__dirname, "logs"));
+    const imageDir = path.join(__dirname, "ezdo_static-image-store");
+    rl.question(`Image store directory(${imageDir}): `, (storeDir) => {
+      if(storeDir.trim().length === 0) {
+        envConfig.IMAGE_STORE_FS = imageDir;
+        if(!fs.existsSync(imageDir)) fs.mkdirSync(imageDir);
       } else {
-        envConfig.LOG_FILE = file;
+        envConfig.IMAGE_STORE_FS = storeDir;
       }
-      fs.closeSync(fs.openSync(envConfig.LOG_FILE, 'w'));
 
-      rl.close();
+      const logFile = path.join(__dirname, "logs/ezdo.log");
+      rl.question(`Path to log file(${logFile}): `, (file) => {
+        if(file.trim().length === 0) {
+          envConfig.LOG_FILE = logFile;
+          if(!fs.existsSync(path.join(__dirname, "logs"))) fs.mkdirSync(path.join(__dirname, "logs"));
+        } else {
+          envConfig.LOG_FILE = file;
+        }
+        fs.closeSync(fs.openSync(envConfig.LOG_FILE, 'w'));
+
+        rl.close();
+      });
     });
   })
 });

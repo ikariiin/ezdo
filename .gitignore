@@ -3,3 +3,4 @@ dist/
 .env
 ezdo.sqlite
 logs/*
+ezdo_static-image-store

@@ -44,12 +44,13 @@ export async function editTodo(req: express.Request, res: express.Response): Pro
       return;
     }
 
-    const { dueDate, task } = req.body;
+    const { dueDate, task, images } = req.body;
     const updateResult = await todos.update({
       id: Number(todoId)
     }, {
       dueDate,
-      task
+      task,
+      images
     });
 
     res.json({

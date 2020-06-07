@@ -116,7 +116,9 @@ class ArchiveComponent extends React.Component<WithSnackbarProps & RoutesProps> 
             </>
           )}
           {this.tasks.map(task => (
-            <Task {...task} isArchive refresh={() => this.fetchArchives()} refreshGroup={() => this.fetchArchives()} key={task.id} />
+            <section>
+              <Task {...task} isArchive refresh={() => this.fetchArchives()} refreshGroup={() => this.fetchArchives()} key={task.id} />
+            </section>
           ))}
         </main>
       </section>

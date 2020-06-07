@@ -1,7 +1,7 @@
 {
   "sqltools.connections": [
     {
-      "database": "${workspaceFolder:todo-hackerearth}/todo.sqlite",
+      "database": "${workspaceFolder:todo-hackerearth}/ezdo.sqlite",
       "driver": "SQLite",
       "name": "sqlite",
       "previewLimit": 50

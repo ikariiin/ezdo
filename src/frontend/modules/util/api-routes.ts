@@ -7,4 +7,5 @@ export const API_TODO_LABEL = "/api/todo/label";
 export const API_TODO_DELETE = "/api/todo/delete";
 export const API_TODO_MOVE = "/api/todo/move";
 export const API_USERNAME = "/api/users/username";
+export const API_IMAGE = "/api/image";
 export const API_HOST = "";

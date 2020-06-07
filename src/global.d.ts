@@ -6,6 +6,7 @@ declare global {
     export interface Request {
       db: Connection;
       logger: Logger
+      imageStoreName: string;
     }
   }
 }

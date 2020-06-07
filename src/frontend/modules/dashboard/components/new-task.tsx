@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Paper, Typography, TextField, Button } from '@material-ui/core';
+import { Paper, Typography, TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core';
 import "../scss/new-task.scss";
 import AddIcon from '@material-ui/icons/AddTwoTone';
 import CancelIcon from '@material-ui/icons/CloseRounded';
@@ -8,6 +8,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { DateTimePicker } from '@material-ui/pickers';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
+import { ImageUploader } from './image-uploader/image-uploader';
 
 export interface NewTaskProps extends WithSnackbarProps {
   refresh: () => void;
@@ -20,11 +21,19 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
   @observable private task: string = "";
   @observable private label: string = "";
   @observable private dueDate?: Date = new Date();
+  @observable private addImage: boolean = false;
+  @observable private attachedImages: Array<number> = [];
+  @observable private imageUploadInProgress: boolean = false;
+  @observable private creating: boolean = false;
 
   private resetState(): void {
     this.task = "";
     this.label = "";
     this.dueDate = new Date();
+    this.attachedImages = [];
+    this.imageUploadInProgress = false;
+    this.addImage = false;
+    this.creating = false;
   }
 
   private async createTask(): Promise<void> {
@@ -35,6 +44,7 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
       });
       return;
     }
+    this.creating = true;
 
     const response = await fetch(`${API_HOST}${API_TODO_CREATE}`, {
       method: "POST",
@@ -46,11 +56,13 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
         date: this.dueDate,
         groupId: this.props.groupId,
         task: this.task,
-        label: this.label
+        label: this.label,
+        images: this.attachedImages.join(",")
       })
     });
 
     const responseJSON = await response.json();
+    this.creating = false;
     if(responseJSON.failed) {
       this.props.enqueueSnackbar(responseJSON.reason, {
         variant: "error"
@@ -80,8 +92,8 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
           fullWidth
           multiline
           autoFocus
-          margin="normal" />
-        
+          margin="normal"
+        />
         <DateTimePicker
           variant="inline"
           format="MMMM Do YYYY, h:mm a"
@@ -93,16 +105,31 @@ class NewTaskComponent extends React.Component<NewTaskProps> {
           size="small"
           color="primary"
           inputVariant="outlined"
-          onChange={date => this.dueDate = date?.toDate()} />
-        
+          onChange={date => this.dueDate = date?.toDate()}
+        />
+        <FormControlLabel
+          label="Add Images"
+          control={<Checkbox color="secondary" onClick={() => this.addImage = !this.addImage} value={this.addImage} />}
+        /> 
+        {this.addImage && (
+          <ImageUploader
+            attachImage={id => this.attachedImages.push(id)}
+            removeImage={id => this.attachedImages = this.attachedImages.filter(imageId => imageId !== id)}
+            changeUploadProgress={(progress: boolean) => this.imageUploadInProgress = progress}
+          />
+        )}
         <section className="button-container">
-          <Button variant="text" color="primary" size="small" onClick={this.props.cancelCreation}>
+          <Button variant="outlined" color="primary" size="small" onClick={this.props.cancelCreation}>
             <CancelIcon />
             Cancel
           </Button>
-          <Button variant="contained" size="small" color="secondary" onClick={() => this.createTask()}>
-            <AddIcon />
-            Add task
+          <Button variant="contained" size="small" color="secondary" onClick={() => this.createTask()} disabled={this.imageUploadInProgress || this.creating}>
+            {this.creating ? "Creating..." : (
+              <>
+                <AddIcon />
+                Add Task
+              </>
+            )}
           </Button>
         </section>
       </Paper>
