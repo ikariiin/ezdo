@@ -1,5 +1,4 @@
-# EZDo
-A task / To-Do management app built for the modern web.
+![banner image](https://raw.githubusercontent.com/SaitamaSama/ezdo-hackerearth/v1.0.2/src/resources/social-images/ezdo-social.png)
 
 ## How to start using it
 ```
